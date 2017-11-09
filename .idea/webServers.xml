@@ -2,16 +2,13 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="e24d2788-97b5-4c12-b2d2-8b433b47b9f2" name="Cars_Test" url="http://cafe.cis.strath.ac.uk">
-        <fileTransfer host="cafe.cis.strath.ac.uk" port="22" rootFolder="/home/skb15165/DEVWEB/2017" accessType="SFTP">
+      <webServer id="32d632af-e63c-4f8c-a8b9-50b8ce0d6991" name="cafe" url="http://cafe.cis.strath.ac.uk">
+        <fileTransfer host="cafe.cis.strath.ac.uk" port="22" rootFolder="/home/skb15165/DEVWEB/2017/Cars" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
           <option name="port" value="22" />
         </fileTransfer>
-      </webServer>
-      <webServer id="8d9155a5-67af-40eb-8c6e-9fb6c9776df1" name="localhos" url="http://localhost">
-        <fileTransfer port="0" accessType="LOCAL" />
       </webServer>
     </option>
   </component>
