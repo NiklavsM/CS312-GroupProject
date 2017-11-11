@@ -1,3 +1,19 @@
 # Include your project-specific ignores in this file
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
 # Useful .gitignore templates: https://github.com/github/gitignore
+
+.idea
+.idea/
+CS312-GroupProject.iml
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+enthumbs.db
+Thumbs.db
+*.pyo
+*.pyc
+*~
+*.bak
+*.swp
