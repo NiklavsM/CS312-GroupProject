@@ -1,4 +1,9 @@
 <?php
+$comp  = input("company");
+$model = input("model");
 
+if($comp === "" || $model === ""){
 
-insertCarType($comp, $model);
+} else {
+    insertCarType($comp, $model);
+}
