@@ -94,7 +94,7 @@ function insertUser($uName, $pass, $name, $dLN, $type)
 function insertCarType($comp, $model, $colour)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `TypesOfCars` (`id`, `company`, `model`, `colour`) VALUES (NULL, ?, ?, ?)');
+    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`id`, `company`, `model`, `colour`) VALUES (NULL, ?, ?, ?)');
     $stmt->bind_param('sss', $comp, $model, $colour);
     $stmt->execute();
     $stmt->close();
@@ -137,13 +137,13 @@ function removeAllElements()
     sendQuery($sql);
     $sql = "TRUNCATE TABLE `Location`";
     sendQuery($sql);
-    $sql = "TRUNCATE TABLE `TypesOfCars`";
+    $sql = "TRUNCATE TABLE `TypesOfCar`";
     sendQuery($sql);
 }
 
 function sqlgetTypeOfCars()
 {
-    $sql = "SELECT * FROM `TypesOfCars`";
+    $sql = "SELECT * FROM `TypesOfCar`";
     return sendQuery($sql);
 }
 
