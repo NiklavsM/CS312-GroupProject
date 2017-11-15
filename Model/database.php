@@ -15,13 +15,13 @@ populate();
 
 function populate()
 {
-
+    
     for ($i = 0; $i < 10; $i++) {
         insertUser(randomStringWithoutNum(5), md5(randomString(10)), randomStringWithoutNum(8), randomString(12), randomInt(2));
     }
 
     for ($i = 0; $i < 10; $i++) {
-        insertCarType(randomString(7), randomString(5), randomString(5));
+        insertCarType(randomString(7), randomString(5));
     }
 
 
@@ -35,7 +35,7 @@ function populate()
         if ($locations->num_rows > 0) {
             while ($type = $carTypes->fetch_assoc()) {
                 while ($location = $locations->fetch_assoc()) {
-                    insertCar($location["id"], $type["id"], randomString(100));
+                    insertCar($location["locationid"], $type["typeid"], randomString(100), "black");
                 }
             }
         }
@@ -47,7 +47,7 @@ function populate()
 
             if ($users->num_rows > 0) {
                 $user = $users->fetch_assoc();
-                insertReservation("10-11-11", "11-11-11", 1, $user["username"], $car["id"]);
+                insertReservation("10-11-11", "11-11-11", 1, $user["username"], $car["carid"]);
 
             }
         }
@@ -82,47 +82,47 @@ function randomCharGen($size, $chars)
     return $randomString;
 }
 
-function insertUser($uName, $pass, $name, $dLN, $type)
+function insertUser($uName, $pass, $name, $dln, $type)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `User` (`username`, `password`, `name`, `dLN`, `type`) VALUES (?, ?, ?, ?, ?)');
-    $stmt->bind_param('ssssi', $uName, $pass, $name, $dLN, $type);
+    $stmt = $conn->prepare('INSERT INTO `User` (`username`, `password`, `name`, `dln`, `type`) VALUES (?, ?, ?, ?, ?)');
+    $stmt->bind_param('ssssi', $uName, $pass, $name, $dln, $type);
     $stmt->execute();
     $stmt->close();
 }
 
-function insertCarType($comp, $model, $colour)
+function insertCarType($comp, $model)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`id`, `company`, `model`, `colour`) VALUES (NULL, ?, ?, ?)');
-    $stmt->bind_param('sss', $comp, $model, $colour);
+    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`typeid`, `company`, `model`) VALUES (NULL, ?, ?)');
+    $stmt->bind_param('ss', $comp, $model);
     $stmt->execute();
     $stmt->close();
 }
 
-function insertCar($loc, $type, $img)
+function insertCar($loc, $type, $img, $colour)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `Cars` (`id`, `location`, `type`, `img`) VALUES (NULL, ?, ?, ?)');
-    $stmt->bind_param('iis', $loc, $type, $img);
+    $stmt = $conn->prepare('INSERT INTO `CarInstance` (`carid`, `location`, `type`, `img`, `colour`) VALUES (NULL, ?, ?, ?, ?)');
+    $stmt->bind_param('iiss', $loc, $type, $img, $colour);
     $stmt->execute();
     $stmt->close();
 }
 
-function insertReservation($start, $end, $active, $uname, $carId)
+function insertReservation($start, $end, $active, $username, $carId)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `Reservation` (`id`, `startDate`, `endDate`, `active`, `username`, `carId`) VALUES (NULL, ?, ?, ?, ?, ?)');
-    $stmt->bind_param('ssisi', $start, $end, $active, $uname, $carId);
+    $stmt = $conn->prepare('INSERT INTO `Reservation` (`reservationid`, `startdate`, `enddate`, `active`, `username`, `carid`) VALUES (NULL, ?, ?, ?, ?, ?)');
+    $stmt->bind_param('ssisi', $start, $end, $active, $username, $carId);
     $stmt->execute();
     $stmt->close();
 }
 
-function insertLocation($name, $postc, $pnumber)
+function insertLocation($name, $postc, $phonenumber)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `Location` (`id`,`name`, `postcode`, `pnumber`) VALUES (NULL, ?, ?, ?)');
-    $stmt->bind_param('ssi', $name, $postc, $pnumber);
+    $stmt = $conn->prepare('INSERT INTO `Location` (`locationid`,`name`, `postcode`, `phonenumber`) VALUES (NULL, ?, ?, ?)');
+    $stmt->bind_param('ssi', $name, $postc, $phonenumber);
     $stmt->execute();
     $stmt->close();
 }
@@ -155,13 +155,20 @@ function sqlgetLocation()
 
 function sqlgetCars()
 {
-    $sql = "SELECT * FROM `Cars`";
+    $sql = "SELECT * FROM `CarInstance`";
     return sendQuery($sql);
 }
 
 function sqlgetUser()
 {
     $sql = "SELECT * FROM `User`";
+    return sendQuery($sql);
+
+}
+
+function sqlgetReservation()
+{
+    $sql = "SELECT * FROM `Reservation`";
     return sendQuery($sql);
 
 }
