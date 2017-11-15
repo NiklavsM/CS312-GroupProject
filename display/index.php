@@ -1,4 +1,5 @@
 <?php
+echo '<div class="container">';
 include_once "dependencies/header.php";
 ?>
 <!--Actual page content goes here-->
@@ -14,4 +15,5 @@ include_once "dependencies/header.php";
 <!--Optional Javascript goes here-->
 <?php
 include_once "dependencies/footer.php";
+echo '</div>'
 ?>
