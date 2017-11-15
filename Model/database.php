@@ -1,6 +1,6 @@
 <?php
 
-//if(count(get_included_files()) ==1) exit("Direct access not permitted.");
+if(count(get_included_files()) ==1) exit("Direct access not permitted.");
 $host = "devweb2017.cis.strath.ac.uk";
 $user = "cs312_o";
 $pass = "Bae3be6OoD7V";
@@ -10,12 +10,9 @@ $conn = new mysqli($host, $user, $pass, $dbname);
 if ($conn->connect_error) {
     //TODO something on error
 }
-removeAllElements();
-populate();
-
 function populate()
 {
-    
+
     for ($i = 0; $i < 10; $i++) {
         insertUser(randomStringWithoutNum(5), md5(randomString(10)), randomStringWithoutNum(8), randomString(12), randomInt(2));
     }
