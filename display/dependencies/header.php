@@ -1,12 +1,12 @@
 <?php
 session_start();
-include_once "~../../../Model/database.php";
-$successfulLogin=False;
+include_once "~/../../model/database.php";
+$successfulLogin = False;
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    $password="";
-    $username="";
-    $confirmPassword="";
+    $password = "";
+    $username = "";
+    $confirmPassword = "";
 
     //If user wants to register
     //confirmPassword will only be set if the user tried to register
@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         if ($password != "" && $username != "" && $successfulRegistration) {
             $sql = "Insert into `User` (`username`, `password`) VALUES (?, ?)";
             if ($stmt = $conn->prepare($sql)) {
-                $password=md5($password);
-                $stmt->bind_param("ss", $username,$password  );
+                $password = md5($password);
+                $stmt->bind_param("ss", $username, $password);
                 $successfulRegistration = $stmt->execute();
             } else {
 
@@ -60,7 +60,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
         if ($stmt->bind_param("ss", $username, $password)) {
             if ($successfulLogin = $stmt->execute()) {
                 $successfulLogin = $stmt->get_result()->num_rows > 0;
-             }
+            }
         }
     }
 } ?>
@@ -72,7 +72,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <!--Load our own style sheet for this page-->
-    <link rel="stylesheet" href="~../../../css/index.css">
+    <link rel="stylesheet" href="../../css/index.css">
     <!--A viewport specifies how much of the page can be seen. Allows easy resizing-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -84,14 +84,25 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
 <!-- Navigation menu !-->
 
 <div class="row" , id="main_text">
-    <button class="btn btn-info btn-lg menu_item" href="index.php"> Home</
-    >
     <button type="button" class="btn btn-info btn-lg menu_item" data-toggle="modal" data-target="#register_box">
         Register
     </button>
     <button type="button" class="btn btn-info btn-lg menu_item" data-toggle="modal" data-target="#login_box">Login
     </button>
 </div>
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a href="index.php" class="nav-link active" role="tab" data-toggle="tab">Home</a>
+    </li>
+    <li class="nav-item">
+        <a data-target="#register_box" class="nav-link" role="tab" data-toggle="modal">Cars</a>
+    </li>
+    <li class="nav-item">
+        <a data-target="#login_box" class="nav-link" role="tab" data-toggle="modal">Something else</a>
+    </li>
+</ul>
+
+
 
 
 <!--Title-->
@@ -101,9 +112,9 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
 </div>
 
 <?php
-    include_once "modals/registration_modal.php";
+include_once "modals/registration_modal.php";
 ?>
 
 <?php
-    include_once "modals/login_modal.php";
+include_once "modals/login_modal.php";
 ?>
