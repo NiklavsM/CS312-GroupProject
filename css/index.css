@@ -1,23 +1,28 @@
-
-.main_text,
-#main_text{
-    background-color: seagreen;
-    width:inherit;
-    height: 50% ;
-}
 .menu_item{
-    border-radius:0;
     border-right: 2px solid white;
-    display: inline-block;
     font-weight: bold;
     padding: 12px 16px;
     text-decoration:none;
-    background-color:seagreen;
+    color:white;
+    display:inline-flex;
+    margin: auto;
 
 }
-
+.menu_list{
+    padding:0;
+    margin:0;
+}
+.item{
+    padding:0;
+    margin-bottom:1%;
+    border-radius: 3px;
+}
+.menu_item2{
+    border-right: none;
+    border-left:  2px solid white;
+}
 .menu_item:hover {
     text-decoration: none;
-    background-color: #37ae71;
+    background-color: darkgrey;
 }
 
