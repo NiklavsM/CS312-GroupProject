@@ -1,0 +1,4 @@
+<?php
+
+
+insertCarType($comp, $model);
