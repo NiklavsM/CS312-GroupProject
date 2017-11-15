@@ -29,26 +29,24 @@ function populate()
         insertLocation(randomString(7), randomString(5), randomInt(5));
     }
 
-    $carTypes = sqlGetTypesOfCars();
+    $carTypes = sqlgetTypeOfCars();
     $locations = sqlgetLocation();
     if ($carTypes->num_rows > 0) {
         if ($locations->num_rows > 0) {
-            while ($type = $carTypes->fetch_assc()) {
-                while ($location = $locations->fetch_assc()) {
+            while ($type = $carTypes->fetch_assoc()) {
+                while ($location = $locations->fetch_assoc()) {
                     insertCar($location["id"], $type["id"], randomString(100));
                 }
             }
         }
     }
-
-
     $cars = sqlgetCars();
     $users = sqlgetUser();
     if ($cars->num_rows > 0) {
-        while ($car = $cars->fetch_assc()) {
+        while ($car = $cars->fetch_assoc()) {
 
             if ($users->num_rows > 0) {
-                $user = $users->fetch_assc();
+                $user = $users->fetch_assoc();
                 insertReservation("10-11-11", "11-11-11", 1, $user["username"], $car["id"]);
 
             }
@@ -114,7 +112,7 @@ function insertCar($loc, $type, $img)
 function insertReservation($start, $end, $active, $uname, $carId)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `Reservation` (`id`, `startDate`, `endDate`, `active`, `username`, `carId`) VALUES (NULL, ?, ?, ?, ?)');
+    $stmt = $conn->prepare('INSERT INTO `Reservation` (`id`, `startDate`, `endDate`, `active`, `username`, `carId`) VALUES (NULL, ?, ?, ?, ?, ?)');
     $stmt->bind_param('ssisi', $start, $end, $active, $uname, $carId);
     $stmt->execute();
     $stmt->close();

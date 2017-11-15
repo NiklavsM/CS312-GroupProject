@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once "database.php";
+include_once "~/../../model/database.php";
 $successfulLogin=False;
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
