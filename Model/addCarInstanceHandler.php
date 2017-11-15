@@ -8,10 +8,12 @@ $colour = input("colour");
 
 if($loc === "" || $type === "" || $img === "" || $colour === ""){
     //TODO ERROR Message
-} else if ()
-
-insertCar($loc, $type, $img, $colour);
-
-function input($field){
-    return mysqli_real_escape_string(strip_tags((isset($_POST[$field]))?filter_var($_POST[$field], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "" ));
+} else if (validate("Location", "locationid", $loc)){
+    //TODO INvalid location
+} else if (validate("TypesOfCar", "typeid", $type)){
+    //TODO INvalid type
+} else {
+    insertCar($loc, $type, $img, $colour);
 }
+
+

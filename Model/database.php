@@ -170,9 +170,15 @@ function sqlgetReservation()
 
 }
 
-function validate($table,$element, $value){}//TODO make this accept reality
+function validate($table,$element, $value){
+    $sql = "SELECT * FROM `$table` WHERE `$element` = `$value`";
+    return ($sql->num_rows > 0);
 
+}//TODO make this accept reality
 
+function input($field){
+    return (strip_tags((isset($_POST[$field]))?filter_var($_POST[$field], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "" ));//TODO Make sql save as sqli need connection
+}
 
 
 
