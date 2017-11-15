@@ -1,6 +1,6 @@
 <?php
 
-//if(count(get_included_files()) ==1) exit("Direct access not permitted.");
+if(count(get_included_files()) ==1) exit("Direct access not permitted.");
 $host = "devweb2017.cis.strath.ac.uk";
 $user = "cs312_o";
 $pass = "Bae3be6OoD7V";
@@ -10,12 +10,9 @@ $conn = new mysqli($host, $user, $pass, $dbname);
 if ($conn->connect_error) {
     //TODO something on error
 }
-removeAllElements();
-populate();
-
 function populate()
 {
-    
+
     for ($i = 0; $i < 10; $i++) {
         insertUser(randomStringWithoutNum(5), md5(randomString(10)), randomStringWithoutNum(8), randomString(12), randomInt(2));
     }
@@ -35,7 +32,7 @@ function populate()
         if ($locations->num_rows > 0) {
             while ($type = $carTypes->fetch_assoc()) {
                 while ($location = $locations->fetch_assoc()) {
-                    insertCar($location["locationid"], $type["typeid"], randomString(100), "black");
+                    insertCar($location["locationid"], $type["typeid"], randomString(100));
                 }
             }
         }
@@ -100,11 +97,11 @@ function insertCarType($comp, $model)
     $stmt->close();
 }
 
-function insertCar($loc, $type, $img, $colour)
+function insertCar($loc, $type, $img)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `CarInstance` (`carid`, `location`, `type`, `img`, `colour`) VALUES (NULL, ?, ?, ?, ?)');
-    $stmt->bind_param('iiss', $loc, $type, $img, $colour);
+    $stmt = $conn->prepare('INSERT INTO `CarInstance` (`carid`, `location`, `type`, `img`) VALUES (NULL, ?, ?, ?)');
+    $stmt->bind_param('iis', $loc, $type, $img);
     $stmt->execute();
     $stmt->close();
 }
@@ -173,7 +170,30 @@ function sqlgetReservation()
 
 }
 
+function validate($table,$element, $value){}//TODO make this accept reality
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO remove this ~FUCK~ mess
 //function used locally to check if a game exists between the two players
 function isGame($p1id, $p2id)
 {

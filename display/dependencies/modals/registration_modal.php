@@ -15,7 +15,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="registerForm" method="POST" action="" novalidate="novalidate">
+                <form id="registerForm" method="POST" action="~/../../../model/registrationHandling.php" novalidate="novalidate">
                     <div class="form-group">
                         <label for="username" class="control-label">Drivers Licence Number</label>
                         <input type="text" class="form-control" id="DLNumber" name="DLNmuber" value="" required=""
