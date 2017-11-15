@@ -80,41 +80,27 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     <title>Home</title>
 </head>
 <body>
+
+<!--Title-->
+<div class="jumbotron text-center bg-dark text-light item" id="title">
+    <h1> Bargain Rust Bucket</h1>
+    <h6 id="small"> Insurance not included.</h6>
+</div>
+
 <div class="container">
     <!-- Navigation menu !-->
     <nav class="navbar navar-expand-md navbar-dark bg-dark text-light item">
         <div>
-            <ul class="nav menu_list" role="tablist">
-                <li class="menu_item">
-                    <a class="menu_button" href="index.php">Home</a>
-                </li>
-                <li class=" menu_item">
-                    <a class="menu_button" href="cars.php">Cars</a>
-                </li>
-                <li class=" menu_item">
-                    <a data-target="#login_box" class="menu_button" role="tab" data-toggle="modal">Something else</a>
-                </li>
-            </ul>
+            <a class="menu_item menu_button" href="index.php">Home</a>
+            <a  class="menu_item menu_button"href="cars.php">Cars</a>
         </div>
 
         <div>
-            <ul class="nav menu_list " role="tablist">
-                <li class="nav-item menu_item menu_item2">
-                    <a data-target="#register_box" class="menu_button" role="tab" data-toggle="modal">Register</a>
-                </li>
-                <li class="nav-item menu_item menu_item2">
-                    <a data-target="#login_box" class="menu_button" role="tab" data-toggle="modal">Login</a>
-                </li>
-            </ul>
+            <a data-target="#register_box" class="menu_item menu_button2" role="tab" data-toggle="modal">Register</a>
+            <a data-target="#login_box" class=" menu_item menu_button2" role="tab" data-toggle="modal">Login</a>
         </div>
 
     </nav>
-
-    <!--Title-->
-    <div class="jumbotron text-center" id="title">
-        <h1> Bargain Rust Bucket</h1>
-        <h6 id="small"> Insurance not included.</h6>
-    </div>
 
     <?php
     include_once "modals/registration_modal.php";
