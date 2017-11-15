@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once "~/../../model/database.php";
+include_once "~../../../Model/database.php";
 $successfulLogin=False;
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
@@ -72,7 +72,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <!--Load our own style sheet for this page-->
-    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="~../../../css/index.css">
     <!--A viewport specifies how much of the page can be seen. Allows easy resizing-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 

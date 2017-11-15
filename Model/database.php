@@ -32,7 +32,7 @@ function populate()
         if ($locations->num_rows > 0) {
             while ($type = $carTypes->fetch_assoc()) {
                 while ($location = $locations->fetch_assoc()) {
-                    insertCar($location["locationid"], $type["typeid"], randomString(100), "black");
+                    insertCar($location["locationid"], $type["typeid"], randomString(100));
                 }
             }
         }
@@ -97,11 +97,11 @@ function insertCarType($comp, $model)
     $stmt->close();
 }
 
-function insertCar($loc, $type, $img, $colour)
+function insertCar($loc, $type, $img)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `CarInstance` (`carid`, `location`, `type`, `img`, `colour`) VALUES (NULL, ?, ?, ?, ?)');
-    $stmt->bind_param('iiss', $loc, $type, $img, $colour);
+    $stmt = $conn->prepare('INSERT INTO `CarInstance` (`carid`, `location`, `type`, `img`) VALUES (NULL, ?, ?, ?)');
+    $stmt->bind_param('iis', $loc, $type, $img);
     $stmt->execute();
     $stmt->close();
 }
@@ -170,7 +170,30 @@ function sqlgetReservation()
 
 }
 
+function validate($table,$element, $value){}//TODO make this accept reality
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO remove this ~FUCK~ mess
 //function used locally to check if a game exists between the two players
 function isGame($p1id, $p2id)
 {
