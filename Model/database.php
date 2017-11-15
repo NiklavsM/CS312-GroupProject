@@ -15,6 +15,8 @@ populate();
 
 function populate(){
 
+    //test
+
     for($i =0; $i < 10 ; $i ++){
         insertUser(randomStringWithoutNum(5), md5(randomString(10)),randomStringWithoutNum(8),randomString(12), randomInt(2));
     }
