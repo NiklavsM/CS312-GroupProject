@@ -112,9 +112,9 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
 </div>
 
 <?php
-include_once "modals/registration_modal.php";
+    include_once "modals/registration_modal.php";
 ?>
 
 <?php
-include_once "modals/login_modal.php";
+    include_once "modals/login_modal.php";
 ?>
