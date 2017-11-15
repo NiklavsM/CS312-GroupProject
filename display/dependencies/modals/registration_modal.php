@@ -17,8 +17,14 @@
             <div class="modal-body">
                 <form id="registerForm" method="POST" action="" novalidate="novalidate">
                     <div class="form-group">
-                        <label for="username" class="control-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" value="" required=""
+                        <label for="username" class="control-label">Drivers Licence Number</label>
+                        <input type="text" class="form-control" id="DLNumber" name="DLNmuber" value="" required=""
+                               title="Please enter your driving licence number" placeholder="XXXXXXXXXXXXXXXXXX">
+                        <span class="help-block"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="username" class="control-label">Email</label>
+                        <input type="text" class="form-control" id="username" name="email" value="" required=""
                                title="Please enter you username" placeholder="example@gmail.com">
                         <span class="help-block"></span>
                     </div>
