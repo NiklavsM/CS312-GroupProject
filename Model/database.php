@@ -172,7 +172,8 @@ function sqlgetReservation()
 
 function validate($table,$element, $value){
     $sql = "SELECT * FROM `$table` WHERE `$element` = `$value`";
-    return ($sql->num_rows > 0);
+    $req = sendQuery($sql);
+    return ($req->num_rows > 0);
 
 }//TODO make this accept reality
 
