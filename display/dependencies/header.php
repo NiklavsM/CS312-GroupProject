@@ -93,6 +93,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
         <div>
             <a class="menu_item menu_button" href="index.php">Home</a>
             <a  class="menu_item menu_button"href="cars.php">Cars</a>
+            <a  class="menu_item menu_button"href="addCar.php">Add car</a>
         </div>
 
         <div>
