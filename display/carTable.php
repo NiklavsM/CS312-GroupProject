@@ -1,6 +1,8 @@
 <?php
 
-
+include_once "~../../../model/database.php";
+$maker= input("make");
+$model= input("model");
 $result = sqlGetCarswithFilter($maker, $model);
 if ($result->num_rows > 0) {
     $resultArray = array();
@@ -21,6 +23,7 @@ if (isset($resultArray)) {
                 echo '</tr>';
                 echo '<td>' . $row["make"] . '</td>';
                 echo '<td>' . $row["model"] . '</td>';
+                echo '<td>' . $row["price"] . '</td>';
                 echo '<tr>';
             }
             ?>
