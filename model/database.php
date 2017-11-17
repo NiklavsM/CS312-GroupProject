@@ -171,13 +171,16 @@ function sqlgetReservation()
 }
 
 function sqlGetCarswithFilter($maker,$model){
-    if(isset($maker) && isset($model)) {
-        $sql = "SELECT * FROM `TypesOfCar` WHERE make = '$maker' AND model = '$model'";
+    if($maker != null && $model != null) {
+        $sql = "SELECT * FROM TypesOfCar WHERE make = '$maker' AND model = '$model'";
         return sendQuery($sql);
     }
-    if(isset($maker)){
+    if($maker != null){
         $sql = "SELECT * FROM `TypesOfCar` WHERE make = '$maker'";
-        return sendQuery($sql);}
+        return sendQuery($sql);
+    }
+    $sql = "SELECT * FROM `TypesOfCar`";
+    return sendQuery($sql);
 }
 
 function validate($table,$element, $value){
