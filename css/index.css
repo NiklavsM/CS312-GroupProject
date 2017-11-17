@@ -37,6 +37,7 @@
 }
 .menu_item:hover {
     text-decoration: none;
+    cursor: pointer;
     background-color: darkgrey;
 }
 
