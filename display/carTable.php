@@ -3,7 +3,7 @@
 include_once "~../../../model/database.php";
 $maker= input("make");
 $model= input("model");
-$result = sqlGetCarswithFilter($maker, $model);
+$result = sqlGetCarsWithFilter($maker, $model);
 if ($result->num_rows > 0) {
     $resultArray = array();
     while ($row = $result->fetch_assoc()) {

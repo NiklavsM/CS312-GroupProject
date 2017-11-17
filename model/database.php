@@ -175,17 +175,17 @@ function sqlgetReservation()
 
 }
 
-function sqlGetCarswithFilter($make,$model){
+function sqlGetCarsWithFilter($make,$model){
     if($make != null && $model != null) {
         echo"Here1";
-        $sql = "SELECT * FROM TypesOfCar WHERE make = '$make' AND model = '$model'";
+        $sql = "SELECT * FROM TypesOfCar WHERE make = '$make' AND model = '$model' ORDER BY make, model";
         return sendQuery($sql);
     }
     if($make != null){
-        $sql = "SELECT * FROM `TypesOfCar` WHERE make = '$make'";
+        $sql = "SELECT * FROM `TypesOfCar` WHERE make = '$make' ORDER BY make, model";
         return sendQuery($sql);
     }
-    $sql = "SELECT * FROM `TypesOfCar`";
+    $sql = "SELECT * FROM `TypesOfCar` ORDER BY make, model";
     return sendQuery($sql);
 }
 
