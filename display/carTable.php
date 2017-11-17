@@ -12,7 +12,7 @@ if ($result->num_rows > 0) {
 }
 if (isset($resultArray)) {
     ?>
-    <table name="Table">
+    <table name="Table" class ="table">
         </tr>
         <th>Maker</th>
         <th>Model</th>
@@ -23,7 +23,9 @@ if (isset($resultArray)) {
                 echo '</tr>';
                 echo '<td>' . $row["make"] . '</td>';
                 echo '<td>' . $row["model"] . '</td>';
-                echo '<td>' . $row["price"] . '</td>';
+                echo '<td>£' . $row["price"] . '</td>';
+                echo '<td><img src="../img/GoodCar.jpg" alt="Luxury at its finest" height="100" width="100"></td>';
+                echo '<td><button class="btn btn-info">Rent</button></td>';
                 echo '<tr>';
             }
             ?>

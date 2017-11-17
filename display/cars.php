@@ -50,11 +50,4 @@ include_once "dependencies/header.php";
     </div>
 
 <?php
-$maker = input("maker");
-$model = input("model");
-
-if(isset($maker)) {
-    //include_once "carTable.php";
-}
-
 include_once "dependencies/footer.php";
