@@ -2,7 +2,7 @@
 
 include_once "database.php";
 
-$comp  = input("company");
+$comp  = input("make");
 $model = input("model");
 
 ?>

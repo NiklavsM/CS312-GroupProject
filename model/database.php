@@ -91,7 +91,7 @@ function insertUser($uName, $pass, $name, $dln, $type)
 function insertCarType($comp, $model)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`typeid`, `company`, `model`) VALUES (NULL, ?, ?)');
+    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`typeid`, `make`, `model`) VALUES (NULL, ?, ?)');
     $stmt->bind_param('ss', $comp, $model);
     $stmt->execute();
     $stmt->close();
@@ -119,7 +119,7 @@ function insertLocation($name, $postc, $phonenumber)
 {
     global $conn;
     $stmt = $conn->prepare('INSERT INTO `Location` (`locationid`,`name`, `postcode`, `phonenumber`) VALUES (NULL, ?, ?, ?)');
-    $stmt->bind_param('ssi', $name, $postc, $phonenumber);
+    $stmt->bind_param('sss', $name, $postc, $phonenumber);
     $stmt->execute();
     $stmt->close();
 }
@@ -168,6 +168,16 @@ function sqlgetReservation()
     $sql = "SELECT * FROM `Reservation`";
     return sendQuery($sql);
 
+}
+
+function sqlGetCarswithFilter($maker,$model){
+    if(isset($maker) && isset($model)) {
+        $sql = "SELECT * FROM `TypesOfCar` WHERE make = '$maker' AND model = '$model'";
+        return sendQuery($sql);
+    }
+    if(isset($maker)){
+        $sql = "SELECT * FROM `TypesOfCar` WHERE make = '$maker'";
+        return sendQuery($sql);}
 }
 
 function validate($table,$element, $value){

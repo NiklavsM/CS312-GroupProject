@@ -12,7 +12,7 @@ if(isset($_POST['error'])){
 
 <form method="post" action="~/../../model/addCarTypeHandler.php">
     <table>
-        <tr><td>Company:      </td><td><input type ="text" name="company">        </td></tr>
+        <tr><td>Make:      </td><td><input type ="text" name="make">        </td></tr>
         <tr><td>Model:        </td><td><input type ="text" name="model">          </td></tr>
         <tr><td>Price Per Day:</td><td><input type ="number" name="price" min="0"></td></tr>
         <tr><td><input type="submit" value="Add" class="btn btn-success">         </td></tr>
