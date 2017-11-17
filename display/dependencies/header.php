@@ -89,19 +89,19 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
 
 <div class="container">
     <!-- Navigation menu !-->
-    <nav class="navbar navar-expand-md navbar-dark bg-dark text-light item">
-        <div>
-            <a class="menu_item menu_button" href="index.php">Home</a>
-            <a  class="menu_item menu_button"href="cars.php">Cars</a>
-            <a  class="menu_item menu_button"href="addCar.php">Add car</a>
-        </div>
-
-        <div>
-            <a data-target="#register_box" class="menu_item menu_button2" role="tab" data-toggle="modal">Register</a>
-            <a data-target="#login_box" class=" menu_item menu_button2" role="tab" data-toggle="modal">Login</a>
-        </div>
-
-    </nav>
+<!--    <nav class="navbar navar-expand-md navbar-dark bg-dark text-light item">-->
+<!--        <div>-->
+<!--            <a class="menu_item menu_button" href="index.php">Home</a>-->
+<!--            <a  class="menu_item menu_button"href="cars.php">Cars</a>-->
+<!--            <a  class="menu_item menu_button"href="addCar.php">Add car</a>-->
+<!--        </div>-->
+<!---->
+<!--        <div>-->
+<!--            <a data-target="#register_box" class="menu_item menu_button2" role="tab" data-toggle="modal">Register</a>-->
+<!--            <a data-target="#login_box" class=" menu_item menu_button2" role="tab" data-toggle="modal">Login</a>-->
+<!--        </div>-->
+<!---->
+<!--    </nav>-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
