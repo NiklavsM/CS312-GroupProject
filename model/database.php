@@ -163,6 +163,11 @@ function sqlgetUser()
 
 }
 
+function sqlGetCarsMakers(){
+    $sql = "SELECT make FROM `TypesOfCar` GROUP BY make";
+    return sendQuery($sql);
+}
+
 function sqlgetReservation()
 {
     $sql = "SELECT * FROM `Reservation`";
