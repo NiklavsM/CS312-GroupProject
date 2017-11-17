@@ -3,11 +3,18 @@
 include_once "database.php";
 
 $var = input("maker");
-if($var !== ""){
-    $carTypes = sqlGetCarswithFilter($var);
+//echo  "Got :".$var." At php";
+if($var === "NA"){
+    echo '<option value="NA">Please Select</option>';
+}else if($var !== ""){
+
+    $carTypes = sqlGetCarswithFilter($var,null);
+    $html = "";
     while ($type = $carTypes->fetch_assoc()) {
-//        echo '<option value='.$type['make'].'>'.$type['make'].'</option>';
+        $varb = $html.'<option value='.$type['model'].'>'.$type['model'].'</option>';
+        $html = $varb;
     }
+    echo $html;
 }
 /**
  * Created by IntelliJ IDEA.
