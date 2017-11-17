@@ -24,7 +24,7 @@ if (isset($resultArray)) {
                 echo '<td>' . $row["make"] . '</td>';
                 echo '<td>' . $row["model"] . '</td>';
                 echo '<td>£' . $row["price"] . '</td>';
-                echo '<td><img src="../img/GoodCar.jpg" alt="Luxury at its finest" height="100" width="100"></td>';
+                echo '<td><img src="../img/GoodCar.jpg" alt="Luxury at its finest" height="90" width="90"></td>';
                 echo '<td><button class="btn btn-info">Rent</button></td>';
                 echo '<tr>';
             }

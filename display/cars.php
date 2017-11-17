@@ -7,7 +7,6 @@ include_once "dependencies/header.php";
         <h1>Our cars</h1>
         <div class="row">
             <div class="col-sm-2">
-
                 <div class="panel panel-info">
                     <div class="panel-heading">Filter</div>
                     <div class="panel-body">
@@ -36,9 +35,15 @@ include_once "dependencies/header.php";
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <input type="submit" value="Filter" class="btn btn-success">
-                                    </td>
+                                    <td>Min:</td>
+                                    <td><input type="number" min="0" name="minPrice" style="width: 3vw"></td>
+                                </tr>
+                                <tr>
+                                    <td>Max:</td>
+                                    <td><input type="number" min="0" name="maxPrice" style="width: 3vw"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="submit" value="Filter" class="btn btn-success"></td>
                                 </tr>
                             </table>
                         </form>
