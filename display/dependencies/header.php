@@ -102,6 +102,30 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
         </div>
 
     </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.php">Home <span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="cars.php">Cars</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admin tools
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="addCar.php">Add car</a>
+                        <a class="dropdown-item" href="addCarType.php">Add car type</a>
+                        <a class="dropdown-item" href="addLocation.php">Add location</a>
+                    </div>
+                </li>
+            </ul>
+            <a data-target="#register_box" class="menu_item" role="tab" data-toggle="modal">Register</a>
+            <a data-target="#login_box" class=" menu_item" role="tab" data-toggle="modal">Login</a>
+        </div>
+    </nav>
 
     <?php
     include_once "modals/registration_modal.php";
