@@ -107,7 +107,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
 <!--        </div>-->
 <!---->
 <!--    </nav>-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="index.php">Home</a>

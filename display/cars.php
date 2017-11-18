@@ -16,7 +16,7 @@ include_once "dependencies/header.php";
                                     <td>Make:</td>
                                     <td>
                                         <select id="make" name="make">
-                                            <option value=""></option>
+                                            <option value="">Any</option>
                                             <option value="Ford">Ford</option>
                                             <option value="Audi">Audi</option>
                                             <option value="Merc">Merc</option>
@@ -27,7 +27,7 @@ include_once "dependencies/header.php";
                                     <td>Model:</td>
                                     <td>
                                         <select id="model" name="model">
-                                            <option value=""></option>
+                                            <option value="">Any</option>
                                             <option value="Fiesta">Fiesta</option>
                                             <option value="Audi">2</option>
                                             <option value="Merc">3</option>
@@ -36,11 +36,11 @@ include_once "dependencies/header.php";
                                 </tr>
                                 <tr>
                                     <td>Min:</td>
-                                    <td><input type="number" min="0" name="minPrice" style="width: 3vw"></td>
+                                    <td><input type="number" min="0" name="minPrice" style="width: 3vw" placeholder="Min"></td>
                                 </tr>
                                 <tr>
                                     <td>Max:</td>
-                                    <td><input type="number" min="0" name="maxPrice" style="width: 3vw"></td>
+                                    <td><input type="number" min="0" name="maxPrice" style="width: 3vw" placeholder="Max"></td>
                                 </tr>
                                 <tr>
                                     <td><input type="submit" value="Filter" class="btn btn-success"></td>
@@ -60,27 +60,6 @@ include_once "dependencies/header.php";
             </div>
         </div>
     </div>
-    <script type='text/javascript'>
-        /* attach a submit handler to the form */
-        $("#selectCarsForm").submit(function (event) {
-
-            /* stop form from submitting normally */
-            event.preventDefault();
-
-            /* get the action attribute from the <form action=""> element */
-            var $form = $(this),
-                url = $form.attr('action');
-
-            /* Send the data using post with element id name and name2*/
-            var posting = $.post("carTable.php", {make: $('#make').val(), model: $('#model').val()});
-
-            /* Alerts the results */
-            posting.done(function (data) {
-                document.getElementById("tablePlaceHolder").innerHTML = data
-                console.log("Here ", data);
-                // alert('success');
-            });
-        });
-    </script>
+    <script type='text/javascript' src = "js/cars.js"></script>
 <?php
 include_once "dependencies/footer.php";
