@@ -2,6 +2,26 @@
 include_once "dependencies/header.php";
 
 ?>
+<script>
+    $(function(){
+        $('#make').on('change',function() {
+            //get current selected item from carMaker
+            var f = $('#make').val();
+            //send f to dropDownHandler
+            $.ajax({
+                url: '~/../../model/dropDownHandler.php',
+                type: 'post',
+                data: {'maker': f}
+            }).done(function(msg) {
+                //insert html into selection
+                document.getElementById('model').innerHTML = msg;
+            })
+                .fail(function() { alert("error"); })
+                .always(function() {
+                });
+        });
+    });
+</script>
 
     <div class="container">
         <h1>Our cars</h1>
@@ -12,35 +32,25 @@ include_once "dependencies/header.php";
                     <div class="panel-body">
                         <form id="selectCarsForm" method="post">
                             <table>
-                                <tr>
-                                    <td>Make:</td>
-                                    <td>
-                                        <select id="make" name="make">
-                                            <option value="">Any</option>
-                                            <option value="Ford">Ford</option>
-                                            <option value="Audi">Audi</option>
-                                            <option value="Merc">Merc</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Model:</td>
-                                    <td>
-                                        <select id="model" name="model">
-                                            <option value="">Any</option>
-                                            <option value="Fiesta">Fiesta</option>
-                                            <option value="Audi">2</option>
-                                            <option value="Merc">3</option>
-                                        </select>
-                                    </td>
-                                </tr>
+                                <tr><td>Make:</td><td><select id="make" name = "make">
+                                            <option value="" selected>Any</option>
+                                            <?php
+                                            $carTypes = sqlGetCarsMakers();
+                                            while ($type = $carTypes->fetch_assoc()) {
+                                                echo '<option value='.$type['make'].'>'.$type['make'].'</option>';
+                                            }
+                                            ?>
+                                        </select></td></tr>
+                                <tr><td>Model:</td><td><select id="model" name ="model">
+                                            <option value="" selected>Any</option>
+                                        </select></td></tr>
                                 <tr>
                                     <td>Min:</td>
-                                    <td><input type="number" min="0" name="minPrice" style="width: 3vw" placeholder="Min"></td>
+                                    <td><input id="min" type="number" min="0" name="minPrice" style="width: 3vw" placeholder="Min"></td>
                                 </tr>
                                 <tr>
                                     <td>Max:</td>
-                                    <td><input type="number" min="0" name="maxPrice" style="width: 3vw" placeholder="Max"></td>
+                                    <td><input id="max" type="number" min="0" name="maxPrice" style="width: 3vw" placeholder="Max"></td>
                                 </tr>
                                 <tr>
                                     <td><input type="submit" value="Filter" class="btn btn-success"></td>

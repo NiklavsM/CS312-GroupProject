@@ -10,7 +10,7 @@ include_once "dependencies/header.php";
             $.ajax({
                 url: '~/../../model/dropDownHandler.php',
                 type: 'post',
-                data: {'maker': f}
+                data: {'maker': f, 'addCar':"true"}
             }).done(function(msg) {
                 //insert html into selection
                 document.getElementById('carModel').innerHTML = msg;
@@ -21,11 +21,39 @@ include_once "dependencies/header.php";
         });
     });
 
-</script>
+    function validateForm(event){
+        var make = $('#carMaker').val();
+        var location = $('#location').val();
+        if(make === "NA" || make === null){
+            document.getElementById('msg').innerHTML = "Please select a car make";
+            console.log(make + " " + location +  "return false");
+            event.preventDefault();
+            return false;
+        }
+        if(location === "NA" || location === null){
+            document.getElementById('msg').innerHTML = "Please select a location";
+            console.log(make + " " + location +  "return false");
+            event.preventDefault();
+            return false;
+        }
+        console.log(make + " " + location +  "return true");
+        return true;
+    }
 
-    <form method="post">
+</script>
+    <div id="msg"></div>
+    <form method="post" action="~/../../model/addCarInstanceHandler.php" onsubmit="validateForm(event)">
         <table>
             <tr><td>Registration Number:</td><td><input type ="text" name="carRegNr"></td></tr>
+            <tr><td>Location:</td><td><select id="location" name = "location">
+                        <option value="NA" selected disabled>Please Select</option>
+                        <?php
+                        $locations = sqlgetLocation();
+                        while ($location = $locations->fetch_assoc()) {
+                            echo '<option value='.$location['locationid'].'>'.$location['name'].' - '.$location['postcode'].'</option>';
+                        }
+                        ?>
+                    </select></td></tr>
             <tr><td>Make:</td><td><select id="carMaker" name = "carMaker">
                         <option value="NA" selected disabled>Please Select</option>
                         <?php
