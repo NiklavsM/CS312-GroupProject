@@ -1,41 +1,40 @@
-
 /*Please don't overwrite components that are used by bootstrap, if necessary give items id or make custom classes.*/
-.menu_item{
+.menu_item {
     font-weight: bold;
     padding: 12px 16px;
-    text-decoration:none;
-    display:inline-flex;
-    margin:0.1pc;
+    text-decoration: none;
+    display: inline-flex;
+    margin: 0.1pc;
 }
 
 .menu_button
-.menu_button2{
-    color:white;
+.menu_button2 {
+    color: white;
 }
 
-.menu_button{
+.menu_button {
     border-right: 2px solid white;
 
 }
-.menu_button2{
-    border-left:2px solid white;
+
+.menu_button2 {
+    border-left: 2px solid white;
 }
 
-
-.car_container{
+.car_container {
     border: 1px solid grey;
-    border-radius:5px;
+    border-radius: 5px;
 }
 
-#title{
-    border-radius:0px;
-    margin-bottom:0.25%;
+#title {
+    border-radius: 0px;
+    margin-bottom: 0.25%;
 }
 
 /*.item{*/
-    /*padding:0;*/
-    /*margin-bottom:1%;*/
-    /*border-radius: 5px;*/
+/*padding:0;*/
+/*margin-bottom:1%;*/
+/*border-radius: 5px;*/
 /*}*/
 .menu_item:hover {
     text-decoration: none;
@@ -43,11 +42,17 @@
     background-color: darkgrey;
 }
 
-.tdItem{
-    width:25%;
-    height:25%;
+.tdItem {
+    width: 25%;
+    height: 25%;
 }
-.table_image{
-    width:33%;
-    height:33%;
+
+.table_image {
+    width: 33%;
+    height: 33%;
+}
+
+.inputCust {
+    width: 4vw;
+    margin: 0.2vw;
 }

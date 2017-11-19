@@ -85,14 +85,14 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     <title>Home</title>
 </head>
 <body>
-
+<div class="container">
 <!--Title-->
-<div class="jumbotron text-center bg-dark text-light item" id="title">
+<div class="text-center bg-dark text-light item" id="title">
     <h1> Bargain Rust Bucket</h1>
     <h6 id="small"> Insurance not included.</h6>
 </div>
 
-<div class="container">
+
     <!-- Navigation menu !-->
 <!--    <nav class="navbar navar-expand-md navbar-dark bg-dark text-light item">-->
 <!--        <div>-->

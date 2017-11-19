@@ -3,7 +3,7 @@
 include_once "dependencies/header.php";
 ?>
 <!--Actual page content goes here-->
-     <div class="jumbotron container">
+     <div class="jumbotron panel>
         <div class="row">
             <p><?php
                 if ($successfulLogin) {

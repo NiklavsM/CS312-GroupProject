@@ -23,7 +23,7 @@ include_once "dependencies/header.php";
     });
 </script>
 
-    <div class="container">
+
         <h1>Our cars</h1>
         <div class="row">
             <div class="col-sm-2">
@@ -32,7 +32,7 @@ include_once "dependencies/header.php";
                     <div class="panel-body">
                         <form id="selectCarsForm" method="post">
                             <table>
-                                <tr><td>Make:</td><td><select id="make" name = "make">
+                                <tr><td>Make:</td><td><select id="make" name = "make" class="inputCust">
                                             <option value="" selected>Any</option>
                                             <?php
                                             $carTypes = sqlGetCarsMakers();
@@ -41,16 +41,16 @@ include_once "dependencies/header.php";
                                             }
                                             ?>
                                         </select></td></tr>
-                                <tr><td>Model:</td><td><select id="model" name ="model">
+                                <tr><td>Model:</td><td><select id="model" name ="model" class="inputCust">
                                             <option value="" selected>Any</option>
                                         </select></td></tr>
                                 <tr>
                                     <td>Min:</td>
-                                    <td><input id="min" type="number" min="0" name="minPrice" style="width: 3vw" placeholder="Min"></td>
+                                    <td><input id="min" type="number" min="0" name="minPrice" class="inputCust" placeholder="Min"></td>
                                 </tr>
                                 <tr>
                                     <td>Max:</td>
-                                    <td><input id="max" type="number" min="0" name="maxPrice" style="width: 3vw" placeholder="Max"></td>
+                                    <td><input id="max" type="number" min="0" name="maxPrice" class="inputCust" placeholder="Max"></td>
                                 </tr>
                                 <tr>
                                     <td><input type="submit" value="Filter" class="btn btn-success"></td>
@@ -69,7 +69,7 @@ include_once "dependencies/header.php";
 
             </div>
         </div>
-    </div>
+
     <script type='text/javascript' src = "js/cars.js"></script>
 <?php
 include_once "dependencies/footer.php";
