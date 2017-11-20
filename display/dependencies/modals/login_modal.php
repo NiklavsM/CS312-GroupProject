@@ -35,7 +35,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id=" loginForm" method="POST" action="~/../dependencies/header.php" onsubmit="validateForm(event)">
+                <form id=" loginForm" method="POST" action="~../header.php" onsubmit="validateForm(event)">
                     <div class="form-group">
                         <label for="username" class="control-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username" value="" required=""

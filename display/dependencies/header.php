@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once "~../../../model/database.php";
+include "~../../../../model/database.php";
 $successfulLogin = False;
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
@@ -11,42 +11,51 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     //If user wants to register
     //confirmPassword will only be set if the user tried to register
     if (isset($_POST['confirmPassword'])) {
+
         //Do registration
         $password = isset($_POST['password']) ? filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
         $confirmPassword = isset($_POST['confirmPassword']) ? filter_var($_POST['confirmPassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
         $username = isset($_POST['username']) ? filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
+        $DLNumber = isset($_POST['DLNumber']) ? filter_var($_POST['DLNumber'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
         $successfulRegistration = $confirmPassword == $password;
 
-        if ($password != "" && $username != "" && $successfulRegistration) {
-            $sql = "Insert into `User` (`username`, `password`) VALUES (?, ?)";
-            if ($stmt = $conn->prepare($sql)) {
-                $password = md5($password);
-                $stmt->bind_param("ss", $username, $password);
-                $successfulRegistration = $stmt->execute();
+        if ($password != "" && $username != "" && $DLNumber != "" && $successfulRegistration) {
+            if (addNewUser($username, $password, $DLNumber, "JIM")) {
+                $_SESSION["username"] = $username;
+                $_SESSION["password"] = $password;
+                $successfulLogin = true;
             } else {
-
+                echo "<p>error there is already a username with that name</p>";
             }
+        } else {
+            echo "<p>The application was unsuccessful with [$password, $username, $confirmPassword]</p>";
         }
-        if ($successfulRegistration) {
-            $_SESSION["username"] = $username;
-            $_SESSION["password"] = $password;
-        }
+    } else {
+        echo "Error unsucessful registration";
     }
 
-    //Otherwise for login...
-    //if it wasn't set, let's attempt to set login info. no effect if no user/pass
-    else {
-        //Do login
-        $password = isset($_POST['password']) ? filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
-        $username = isset($_POST['username']) ? filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
-        $successfulLogin = $password != "" && $username != "";
+}
 
-        if ($successfulLogin) {
-            $_SESSION['password'] = md5($password);
+//Otherwise for login...
+//if it wasn't set, let's attempt to set login info. no effect if no user/pass
+else {
+    //Do login
+    $password = isset($_POST['password']) ? filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
+    $username = isset($_POST['username']) ? filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
+    if ($password != "" && $username != "") {
+        if (checkLogin($username, $password)) {
+            session_start();
+            $_SESSION['password'] = $password;
             $_SESSION['username'] = $username;
+            $successfulLogin = true;
+        } else {
+            echo "<p>Incorrect Password</p>";
         }
+    } else {
+        echo "<p>Wow how dumb can you get</p>";
     }
 }
+
 
 //Check if login details are available
 if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && isset($_SESSION['username'])) {
@@ -55,13 +64,12 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     $sql = "SELECT * FROM `User` WHERE `username`= ? and `password` = ?";
     $password = filter_var($_SESSION['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $username = filter_var($_SESSION['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-    if ($stmt = $conn->prepare($sql)) {
-        if ($stmt->bind_param("ss", $username, $password)) {
-            if ($successfulLogin = $stmt->execute()) {
-                $successfulLogin = $stmt->get_result()->num_rows > 0;
-            }
-        }
+    if (checkLogin($username, $password)) {
+        echo "<h5>Welcome " . $_SESSION['username'] . "</h5>";
+        $successfulLogin = true;
+    } else {
+        $successfulLogin = false;
+        session_cache_expire();
     }
 } ?>
 
@@ -77,7 +85,8 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     <link rel="stylesheet" href="~../../../css/index.css">
     <!--A viewport specifies how much of the page can be seen. Allows easy resizing-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <!--needed for panels to work-->
 
     <!--needed for panels to work-->
@@ -86,56 +95,59 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
 </head>
 <body>
 <div class="container">
-<!--Title-->
-<div class="text-center bg-dark text-light item" id="title">
-    <h1> Bargain Rust Bucket</h1>
-    <h6 id="small"> Insurance not included.</h6>
-</div>
+    <!--Title-->
+    <div class="text-center bg-dark text-light item" id="title">
+        <h1> Bargain Rust Bucket</h1>
+        <h6 id="small"> Insurance not included.</h6>
+    </div>
 
 
     <!-- Navigation menu !-->
-<!--    <nav class="navbar navar-expand-md navbar-dark bg-dark text-light item">-->
-<!--        <div>-->
-<!--            <a class="menu_item menu_button" href="index.php">Home</a>-->
-<!--            <a  class="menu_item menu_button"href="cars.php">Cars</a>-->
-<!--            <a  class="menu_item menu_button"href="addCar.php">Add car</a>-->
-<!--        </div>-->
-<!---->
-<!--        <div>-->
-<!--            <a data-target="#register_box" class="menu_item menu_button2" role="tab" data-toggle="modal">Register</a>-->
-<!--            <a data-target="#login_box" class=" menu_item menu_button2" role="tab" data-toggle="modal">Login</a>-->
-<!--        </div>-->
-<!---->
-<!--    </nav>-->
+    <!--    <nav class="navbar navar-expand-md navbar-dark bg-dark text-light item">-->
+    <!--        <div>-->
+    <!--            <a class="menu_item menu_button" href="index.php">Home</a>-->
+    <!--            <a  class="menu_item menu_button"href="cars.php">Cars</a>-->
+    <!--            <a  class="menu_item menu_button"href="addCar.php">Add car</a>-->
+    <!--        </div>-->
+    <!---->
+    <!--        <div>-->
+    <!--            <a data-target="#register_box" class="menu_item menu_button2" role="tab" data-toggle="modal">Register</a>-->
+    <!--            <a data-target="#login_box" class=" menu_item menu_button2" role="tab" data-toggle="modal">Login</a>-->
+    <!--        </div>-->
+    <!---->
+    <!--    </nav>-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="cars.php">Cars</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Admin tools
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="addCar.php">Add car</a>
-                        <a class="dropdown-item" href="addCarType.php">Add car type</a>
-                        <a class="dropdown-item" href="addLocation.php">Add location</a>
-                        <a class="dropdown-item" href="carsInLocations.php">View Cars At Locations</a>
-                    </div>
-                </li>
-            </ul>
-            <a data-target="#register_box" class="nav-link menu_item" role="tab" data-toggle="modal">Register</a>
-            <a data-target="#login_box" class="nav-link menu_item" role="tab" data-toggle="modal">Login</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.php">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="cars.php">Cars</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin tools
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="addCar.php">Add car</a>
+                    <a class="dropdown-item" href="addCarType.php">Add car type</a>
+                    <a class="dropdown-item" href="addLocation.php">Add location</a>
+                    <a class="dropdown-item" href="carsInLocations.php">View Cars At Locations</a>
+                </div>
+            </li>
+        </ul>
+        <a data-target="#register_box" class="nav-link menu_item" role="tab" data-toggle="modal">Register</a>
+        <a data-target="#login_box" class="nav-link menu_item" role="tab" data-toggle="modal">Login</a>
     </nav>
 
     <?php
-    include_once "modals/registration_modal.php";
+    if (!$successfulLogin) {
+        include_once "modals/registration_modal.php";
+    }
     ?>
 
     <?php
-    include_once "modals/login_modal.php";
-    ?>
+    if (!$successfulLogin) {
+        include_once "modals/login_modal.php";
+    } ?>
 

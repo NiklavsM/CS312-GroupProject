@@ -47,16 +47,16 @@
             </div>
             <div class="modal-body">
                 <div id="msgReg"></div>
-                <form id="registerForm" method="POST" action="~/../dependencies/header.php" onsubmit="validateForm(event)" novalidate="novalidate">
+                <form id="registerForm" method="POST" action="~../../index.php" onsubmit="validateForm(event)" novalidate="novalidate">
                     <div class="form-group">
                         <label for="username" class="control-label">Drivers Licence Number</label>
-                        <input type="text" class="form-control" id="DLNumber" name="DLNmuber" value="" required=""
+                        <input type="text" class="form-control" id="DLNumber" name="DLNumber" value="" required=""
                                title="Please enter your driving licence number" placeholder="XXXXXXXXXXXXXXXXXX">
                         <span class="help-block"></span>
                     </div>
                     <div class="form-group">
                         <label for="username" class="control-label">Email</label>
-                        <input type="text" class="form-control" id="username" name="email" value="" required=""
+                        <input type="text" class="form-control" id="username" name="username" value="" required=""
                                title="Please enter you username" placeholder="example@gmail.com">
                         <span class="help-block"></span>
                     </div>

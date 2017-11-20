@@ -220,6 +220,30 @@ function input($field){
     return (strip_tags((isset($_POST[$field]))?filter_var($_POST[$field], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "" ));//TODO Make sql save as sqli need connection
 }
 
+function checkLogin($username, $password){
+    $sql = "SELECT * FROM `User` WHERE `username` = '$username'";
+    $req = sendQuery($sql);
+    if($req -> num_rows > 0){
+        $reqq = $req -> fetch_assoc();
+        $pass = $reqq["password"];
+        if(md5($password) === $pass){
+            return true;
+        }
+    }
+    return false;
+}
+
+function addNewUser($username, $password, $dln, $name){
+    $encPass = md5($password);
+    global $conn;
+    $stmt = $conn->prepare($sql = "INSERT INTO `User` (`username`, `password`, `name`, `dln`, `type`) VALUES (?,?,?,?, '0')");
+    $stmt->bind_param('ssss', $username, $encPass, $name, $dln);
+    $outcome = $stmt->execute();
+    $stmt->close();
+    return $outcome;
+    }
+
+
 function sendQuery($query)
 {
     global $conn;
