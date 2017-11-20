@@ -1,11 +1,17 @@
 <?php
 include_once "dependencies/header.php";
+
+if(isset($_POST['response'])){
+    echo $_POST['response'];
+}else{
+    echo "false";
+}
 ?>
 <script>
     $(function(){
-        $('#carMaker').on('change',function() {
+        $('#make').on('change',function() {
             //get current selected item from carMaker
-            var f = $('#carMaker').val();
+            var f = $('#make').val();
             //send f to dropDownHandler
             $.ajax({
                 url: '~/../../model/dropDownHandler.php',
@@ -13,7 +19,7 @@ include_once "dependencies/header.php";
                 data: {'maker': f, 'addCar':"true"}
             }).done(function(msg) {
                 //insert html into selection
-                document.getElementById('carModel').innerHTML = msg;
+                document.getElementById('model').innerHTML = msg;
             })
                 .fail(function() { alert("error"); })
                 .always(function() {
@@ -22,16 +28,16 @@ include_once "dependencies/header.php";
     });
 
     function validateForm(event){
-        var make = $('#carMaker').val();
+        var make = $('#make').val();
         var location = $('#location').val();
         if(make === "NA" || make === null){
-            document.getElementById('msg').innerHTML = "Please select a car make";
+            document.getElementById('msgCar').innerHTML = "Please select a car make";
             console.log(make + " " + location +  "return false");
             event.preventDefault();
             return false;
         }
         if(location === "NA" || location === null){
-            document.getElementById('msg').innerHTML = "Please select a location";
+            document.getElementById('msgCar').innerHTML = "Please select a location";
             console.log(make + " " + location +  "return false");
             event.preventDefault();
             return false;
@@ -41,10 +47,9 @@ include_once "dependencies/header.php";
     }
 
 </script>
-    <div id="msg"></div>
+    <div id="msgCar"></div>
     <form method="post" action="~/../../model/addCarInstanceHandler.php" onsubmit="validateForm(event)">
         <table>
-            <tr><td>Registration Number:</td><td><input type ="text" name="carRegNr"></td></tr>
             <tr><td>Location:</td><td><select id="location" name = "location">
                         <option value="NA" selected disabled>Please Select</option>
                         <?php
@@ -54,7 +59,7 @@ include_once "dependencies/header.php";
                         }
                         ?>
                     </select></td></tr>
-            <tr><td>Make:</td><td><select id="carMaker" name = "carMaker">
+            <tr><td>Make:</td><td><select id="make" name = "make">
                         <option value="NA" selected disabled>Please Select</option>
                         <?php
                         $carTypes = sqlGetCarsMakers();
@@ -63,7 +68,7 @@ include_once "dependencies/header.php";
                         }
                         ?>
                     </select></td></tr>
-            <tr><td>Model:</td><td><select id="carModel" name ="carModel">
+            <tr><td>Model:</td><td><select id="model" name ="model">
                                     <option value="NA">Please Select</option>
                     </select></td></tr>
             <tr><td><input type="submit" value="Add" class="btn btn-success"></td></tr>

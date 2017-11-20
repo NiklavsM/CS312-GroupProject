@@ -7,6 +7,24 @@
  */
 ?>
 
+<script>
+    function validateForm(event){
+        var username = $('#username').val();
+        var pass = $('#password').val();
+
+        if(pass === ""){
+            document.getElementById('msgReg').innerHTML = "Password cannot be empty.";
+            event.preventDefault();
+            return false;
+        }
+        if(username === ""){
+            document.getElementById('msgReg').innerHTML = "User name cannot be empty.";
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+</script>
 
 <!-- Modal -->
 <div id="login_box" class="modal fade" role="dialog">
@@ -17,7 +35,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id=" loginForm" method="POST" action="">
+                <form id=" loginForm" method="POST" action="~/../dependencies/header.php" onsubmit="validateForm(event)">
                     <div class="form-group">
                         <label for="username" class="control-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username" value="" required=""
