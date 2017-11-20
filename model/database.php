@@ -143,6 +143,14 @@ function sqlCheckisRented($carID){
     return sendQuery($sql);
 }
 
+function removeCarById($carid){
+    global $conn;
+    $stmt = $conn->prepare('DELETE FROM `CarInstance` WHERE carid = ?');
+    $stmt->bind_param('i', $carid);
+    $stmt->execute();
+    $stmt->close();
+}
+
 function removeAllElements()
 {
     $sql = "TRUNCATE TABLE `Reservation`";

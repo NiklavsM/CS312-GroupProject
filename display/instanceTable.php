@@ -1,13 +1,5 @@
 <?php
 include_once "~../../../model/database.php";
-?>
-
-<script>
-    function handleDelete(){
-
-    }
-</script>
-<?php
 
 $locationID= input("location");
 //echo $location;
@@ -25,7 +17,7 @@ if (isset($resultArray)) {
     ?>
     <table name="Table" class ="table">
         </tr>
-        <th></th>
+        <th>Remove Car</th>
         <th>Make</th>
         <th>Model</th>
         <th></th>
@@ -45,7 +37,11 @@ if (isset($resultArray)) {
                 $rentingResult = sqlCheckisRented($row['id']);
                 $rented = $rentingResult->fetch_assoc();
                 echo '</tr>';
-                echo '<td><button class="btn btn-info" onclick="handleDelete()">Delete</button></td>';
+                if(!isset($rented["rentee"])){
+                    echo '<td><button class="btn btn-info" value="'.$row['id'].'" onclick="handleDelete(this)">Delete</button></td>';
+                }else{
+                    echo '<td></td>';
+                }
                 echo '<td>' . $row["make"] . '</td>';
                 echo '<td>' . $row["model"] . '</td>';
                 echo '<td><img src="../img/GoodCar.jpg" alt="Luxury at its finest" height="90" width="90"></td>';
@@ -57,7 +53,7 @@ if (isset($resultArray)) {
                 }else{
                     echo '<td>Currently Available</td>';
                     echo '<td><button class="btn btn-info" id="transferButton" value="'.$row['id'].'" onclick="transfer(this)">Transfer</button></td>';
-                    echo '<td><select id="transferList">';
+                    echo '<td><select id="transferList'.$row['id'].'">';
                     $locations = sqlgetLocation();
                     while ($location = $locations->fetch_assoc()) {
                         if($location['name'] !== $row["location"]){
