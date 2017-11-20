@@ -6,18 +6,18 @@
  * Time: 13:20
  */
 ?>
-
 <script>
     function validateForm(event){
-        var username = $('#username').val();
-        var pass = $('#password').val();
-
+        var loginUserName = $('#loginUserName').val();
+        var pass = $('#loginPassWord').val();
+        console.log(loginUserName);
+        console.log(pass);
         if(pass === ""){
-            document.getElementById('msgReg').innerHTML = "Password cannot be empty.";
+            document.getElementById('msgReg').innerHTML = "Password Fields cannot be empty.";
             event.preventDefault();
             return false;
         }
-        if(username === ""){
+        if(loginUserName === ""){
             document.getElementById('msgReg').innerHTML = "User name cannot be empty.";
             event.preventDefault();
             return false;
@@ -34,27 +34,22 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
+            <div id="msgReg"></div>
             <div class="modal-body">
-                <form id=" loginForm" method="POST" action="~../header.php" onsubmit="validateForm(event)">
+                <form name="loginForm" id="loginForm" method="POST" action="~../../index.php" onsubmit="validateForm(event)" novalidate="novalidate">
                     <div class="form-group">
-                        <label for="username" class="control-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" value="" required=""
-                               title="Please enter you username" placeholder="example@gmail.com">
+                        <label for="loginUserName" class="control-label">Username</label>
+                        <input type="text" class="form-control" id="loginUserName" name="loginUserName" value="" required=""
+                               title="Please enter you loginUserName" placeholder="example@gmail.com">
                         <span class="help-block"></span>
                     </div>
                     <div class="form-group">
-                        <label for="password" class="control-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" value="" required=""
-                               title="Please enter your password" placeholder="Password">
+                        <label for="loginPassWord" class="control-label">Password</label>
+                        <input type="loginPassWord" class="form-control" id="loginPassWord" name="loginPassWord" value="" required=""
+                               title="Please enter your loginPassWord" placeholder="Password">
                         <span class="help-block"></span>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="remember" id="remember"> Remember login
-                        </label>
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Login</button>
-                    <a href="" class="btn btn-default btn-block">Forgotten password</a>
                 </form>
             </div>
             <div class="modal-footer">

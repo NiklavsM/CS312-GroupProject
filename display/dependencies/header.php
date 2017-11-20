@@ -2,7 +2,6 @@
 session_start();
 include "~../../../model/database.php";
 $successfulLogin = False;
-
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $password = "";
     $username = "";
@@ -30,32 +29,28 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         } else {
             echo "<p>The application was unsuccessful with [$password, $username, $confirmPassword]</p>";
         }
-    } else {
-        echo "Error unsucessful registration";
     }
 
-}
 
 //Otherwise for login...
 //if it wasn't set, let's attempt to set login info. no effect if no user/pass
-else {
-    //Do login
-    $password = isset($_POST['password']) ? filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
-    $username = isset($_POST['username']) ? filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
-    if ($password != "" && $username != "") {
-        if (checkLogin($username, $password)) {
-            session_start();
-            $_SESSION['password'] = $password;
-            $_SESSION['username'] = $username;
-            $successfulLogin = true;
-        } else {
-            echo "<p>Incorrect Password</p>";
+    else {
+        if (isset($_POST['loginPassWord'])) {
+            //Do login
+            $password = isset($_POST['loginPassWord']) ? filter_var($_POST['loginPassWord'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
+            $username = isset($_POST['loginUserName']) ? filter_var($_POST['loginUserName'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
+            if ($password != "" && $username != "") {
+                if (checkLogin($username, $password)) {
+                    $_SESSION['loginPassWord'] = $password;
+                    $_SESSION['loginUserName'] = $username;
+                    $successfulLogin = true;
+                } else {
+                    echo "<p>Incorrect Password</p>";
+                }
+            }
         }
-    } else {
-        echo "<p>Wow how dumb can you get</p>";
     }
 }
-
 
 //Check if login details are available
 if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && isset($_SESSION['username'])) {
@@ -68,6 +63,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
         echo "<h5>Welcome " . $_SESSION['username'] . "</h5>";
         $successfulLogin = true;
     } else {
+        echo "<p>Oops session has expired</p>";
         $successfulLogin = false;
         session_cache_expire();
     }
