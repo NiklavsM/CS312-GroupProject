@@ -124,6 +124,16 @@ function insertLocation($name, $postc, $phonenumber)
     $stmt->close();
 }
 
+function sqlgetCarsAtLocation($location){
+    $sql = "SELECT ci.carid AS id, toc.make AS make, toc.model AS model, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc ON toc.typeid = ci.type JOIN Location AS loc ON ci.location = loc.locationid WHERE ci.location = ".$location;
+    return sendQuery($sql);
+}
+
+function sqlCheckisRented($carID){
+    $sql = "SELECT res.username AS rentee FROM `CarInstance` AS ci JOIN Reservation AS res ON res.carid = ci.carid WHERE ci.carid = ".$carID;
+    return sendQuery($sql);
+}
+
 function removeAllElements()
 {
     $sql = "TRUNCATE TABLE `Reservation`";
@@ -153,6 +163,12 @@ function sqlgetLocation()
 function sqlgetCars()
 {
     $sql = "SELECT * FROM `CarInstance`";
+    return sendQuery($sql);
+}
+
+function sqlgetCarTypes()
+{
+    $sql = "SELECT ci.carid AS id, toc.make AS make, toc.model AS model, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc JOIN Location AS loc ON ci.location = loc.locationid WHERE toc.typeid = ci.type";
     return sendQuery($sql);
 }
 
@@ -209,11 +225,7 @@ function sendQuery($query)
     global $conn;
     $result = $conn->query($query);
     if ($conn->connect_error) {
-        ?>
-        <script>
-            displayErrorMessage("Connection Error");
-        </script>
-        <?php
+        return $conn->error;
     }
     return $result;
 }

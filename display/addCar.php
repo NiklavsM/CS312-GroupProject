@@ -1,11 +1,11 @@
 <?php
 include_once "dependencies/header.php";
 
-if(isset($_POST['response'])){
-    echo $_POST['response'];
-}else{
-    echo "false";
-}
+//if(isset($_POST['response'])){
+//    echo $_POST['response'];
+//}else{
+//    echo "false";
+//}
 ?>
 <script>
     $(function(){

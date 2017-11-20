@@ -123,6 +123,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
                         <a class="dropdown-item" href="addCar.php">Add car</a>
                         <a class="dropdown-item" href="addCarType.php">Add car type</a>
                         <a class="dropdown-item" href="addLocation.php">Add location</a>
+                        <a class="dropdown-item" href="carsInLocations.php">View Cars At Locations</a>
                     </div>
                 </li>
             </ul>
