@@ -124,6 +124,15 @@ function insertLocation($name, $postc, $phonenumber)
     $stmt->close();
 }
 
+function changeLocationOfCar($carid, $location)
+{
+    global $conn;
+    $stmt = $conn->prepare('UPDATE `CarInstance` SET location = ? WHERE carid = ?');
+    $stmt->bind_param('ii', $location, $carid);
+    $stmt->execute();
+    $stmt->close();
+}
+
 function sqlgetCarsAtLocation($location){
     $sql = "SELECT ci.carid AS id, toc.make AS make, toc.model AS model, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc ON toc.typeid = ci.type JOIN Location AS loc ON ci.location = loc.locationid WHERE ci.location = ".$location;
     return sendQuery($sql);

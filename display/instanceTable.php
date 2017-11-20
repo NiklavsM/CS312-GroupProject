@@ -1,28 +1,14 @@
 <?php
-
+include_once "~../../../model/database.php";
 ?>
 
 <script>
-    function handleTransfer(){
-        if(document.getElementById("transferList").style.visibility  === 'hidden'){
-            document.getElementById("transferButton").value = 'Cancel Transfer';
-            document.getElementById("transferList").style.visibility  = 'visible';
-        }else{
-            document.getElementById("transferButton").value = 'Transfer';
-            document.getElementById("transferList").style.visibility  = 'hidden';
-        }
-
     function handleDelete(){
 
     }
-//    hideElem();
-//    function hideElem() {
-//        document.getElementById("transferList").style.visibility = "hidden";
-//    }
 </script>
 <?php
 
-include_once "~../../../model/database.php";
 $locationID= input("location");
 //echo $location;
 $result = sqlgetCarsAtLocation($locationID);
@@ -70,7 +56,7 @@ if (isset($resultArray)) {
                     echo '<td>'.$rented["rentee"].'</td>';
                 }else{
                     echo '<td>Currently Available</td>';
-                    echo '<td><button class="btn btn-info" id="transferButton" onclick="handleTransfer()">Transfer</button></td>';
+                    echo '<td><button class="btn btn-info" id="transferButton" value="'.$row['id'].'" onclick="transfer(this)">Transfer</button></td>';
                     echo '<td><select id="transferList">';
                     $locations = sqlgetLocation();
                     while ($location = $locations->fetch_assoc()) {

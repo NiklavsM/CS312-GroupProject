@@ -21,6 +21,36 @@ include_once "dependencies/header.php";
                     });
             });
         });
+
+        function transfer(button){
+            console.log("button clicked");
+            var id = $(button).val();
+            var f = $('#transferList').val();
+            console.log("id:" + id + " f:"+f);
+            $.ajax({
+                url: 'transferCar.php',
+                type: 'post',
+                data: {'transfer': f, 'id':id}
+            }).done(function(msg) {
+                var f = $('#location').val();
+                //send f to dropDownHandler
+                $.ajax({
+                    url: 'instanceTable.php',
+                    type: 'post',
+                    data: {'location': f}
+                }).done(function(msg) {
+                    //insert html into selection
+                    document.getElementById('tableResponsePlaceHolder').innerHTML = msg;
+                })
+                    .fail(function() { alert("error"); })
+                    .always(function() {
+                    });
+            })
+                .fail(function() { alert("error"); })
+                .always(function() {
+                });
+
+        }
     </script>
 
 
