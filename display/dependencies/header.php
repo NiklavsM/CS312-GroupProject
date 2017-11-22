@@ -60,7 +60,6 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     $password = filter_var($_SESSION['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $username = filter_var($_SESSION['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     if (checkLogin($username, $password)) {
-        echo "<h5>Welcome " . $_SESSION['username'] . "</h5>";
         $successfulLogin = true;
     } else {
         echo "<p>Oops session has expired</p>";

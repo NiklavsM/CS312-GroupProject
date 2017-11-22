@@ -115,6 +115,8 @@ function insertReservation($start, $end, $active, $username, $carId)
     $stmt->close();
 }
 
+
+
 function insertLocation($name, $postc, $phonenumber)
 {
     global $conn;
@@ -270,5 +272,25 @@ function sendQuery($query)
     }
     return $result;
 }
+
+function insertReservationByCar($location, $type, $username, $start, $end)
+{
+
+    global $conn;
+    $stmt = $conn->prepare('INSERT INTO `Reservation` (`reservationid`, `startdate`, `enddate`, `active`, `username`, `carid`) VALUES (NULL, ?, ?, 1, ?, ?)');
+    $stmt->bind_param('sssi', $start, $end, $username, $carId);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function getInstancefromLocTyp($location, $type){
+    global $conn;
+    $stmt = $conn->prepare($sql = "SELECT * FROM `CarInstance` WHERE location= ? AND type = ?");
+    $stmt->bind_param('ii', $location,$type);
+    $outcome = $stmt->execute();
+    $stmt->close();
+    return $outcome;
+}
+
 
 
