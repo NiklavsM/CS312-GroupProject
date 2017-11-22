@@ -8,12 +8,13 @@
 ?>
 
 <script>
-    function validateForm(event){
+    function registerValidateForm(event){
         var username = $('#username').val();
         var pass = $('#password').val();
         var confrmPass = $('#confirmPassword').val();
         var dlnumber = $('#DLNumber').val();
 
+        console.log("This is a log");
         if(pass !== confrmPass){
             document.getElementById('msgReg').innerHTML = "Passwords do not match.";
             event.preventDefault();
@@ -47,7 +48,7 @@
             </div>
             <div class="modal-body">
                 <div id="msgReg"></div>
-                <form id="registerForm" method="POST" action="~../../index.php" onsubmit="validateForm(event)" novalidate="novalidate">
+                <form id="registerForm" method="POST" action="~../../index.php" onsubmit="registerValidateForm(event)" novalidate="novalidate">
                     <div class="form-group">
                         <label for="username" class="control-label">Drivers Licence Number</label>
                         <input type="text" class="form-control" id="DLNumber" name="DLNumber" value="" required=""

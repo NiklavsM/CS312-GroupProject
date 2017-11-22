@@ -10,8 +10,6 @@
     function validateForm(event){
         var loginUserName = $('#loginUserName').val();
         var pass = $('#loginPassWord').val();
-        console.log(loginUserName);
-        console.log(pass);
         if(pass === ""){
             document.getElementById('msgReg').innerHTML = "Password Fields cannot be empty.";
             event.preventDefault();
