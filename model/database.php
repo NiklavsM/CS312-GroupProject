@@ -275,12 +275,13 @@ function sendQuery($query)
 
 function insertReservationByCar($location, $type, $username, $start, $end)
 {
-
-    global $conn;
-    $stmt = $conn->prepare('INSERT INTO `Reservation` (`reservationid`, `startdate`, `enddate`, `active`, `username`, `carid`) VALUES (NULL, ?, ?, 1, ?, ?)');
-    $stmt->bind_param('sssi', $start, $end, $username, $carId);
-    $stmt->execute();
-    $stmt->close();
+    if($carId = sqlCheckValidDateForHire($location, $type, $start, $end) != -1) {
+        global $conn;
+        $stmt = $conn->prepare('INSERT INTO `Reservation` (`reservationid`, `startdate`, `enddate`, `active`, `username`, `carid`) VALUES (NULL, ?, ?, 1, ?, ?)');
+        $stmt->bind_param('sssi', $start, $end, $username, $carId);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 
 function getInstancefromLocTyp($location, $type){
@@ -290,6 +291,26 @@ function getInstancefromLocTyp($location, $type){
     $outcome = $stmt->execute();
     $stmt->close();
     return $outcome;
+}
+function sqlCheckValidDateForHire($location, $type, $start, $end){
+    $req = getInstancefromLocTyp($location, $type);
+    if ($req->num_rows > 0) {
+        while ($carID = $req->fetch_assoc()) {
+            $reqq = sqlgetReservationFromCarID($carID["carid"]);
+            if ($reqq->num_rows > 0) {
+                //TODO write code to do this
+            } else {
+                return $carID["carid"];
+            }
+        }
+    }
+}
+
+function sqlgetReservationFromCarID($carID)
+{
+    $sql = "SELECT * FROM `Reservation` WHERE carid = $carID";
+    return sendQuery($sql);
+
 }
 
 
