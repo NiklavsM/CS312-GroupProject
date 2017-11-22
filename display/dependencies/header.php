@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $username = isset($_POST['loginUserName']) ? filter_var($_POST['loginUserName'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
             if ($password != "" && $username != "") {
                 if (checkLogin($username, $password)) {
-                    $_SESSION['loginPassWord'] = $password;
-                    $_SESSION['loginUserName'] = $username;
+                    $_SESSION['password'] = $password;
+                    $_SESSION['username'] = $username;
                     $successfulLogin = true;
                 } else {
                     echo "<p>Incorrect Password</p>";
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && isset($_SESSION['username'])) {
     //Do login
     $successfulLogin = False;
-    $sql = "SELECT * FROM `User` WHERE `username`= ? and `password` = ?";
+
     $password = filter_var($_SESSION['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $username = filter_var($_SESSION['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     if (checkLogin($username, $password)) {
