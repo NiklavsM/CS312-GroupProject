@@ -298,6 +298,11 @@ function sqlCheckValidDateForHire($location, $type, $start, $end){
         while ($carID = $req->fetch_assoc()) {
             $reqq = sqlgetReservationFromCarID($carID["carid"]);
             if ($reqq->num_rows > 0) {
+                while($reservation = $reqq ->fetch_assoc()){
+                    if(!(($start < $reservation["enddate"] && $end > $reservation["enddate"]) || ($start < $reservation["startdate"] && $end > $reservation["startdate"]) )){
+                        return $carID["carid"];
+                    }
+                }
                 //TODO write code to do this
             } else {
                 return $carID["carid"];
