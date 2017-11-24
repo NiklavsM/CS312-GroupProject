@@ -10,46 +10,46 @@ $conn = new mysqli($host, $user, $pass, $dbname);
 if ($conn->connect_error) {
     //TODO something on error
 }
-function populate()
-{
-
-    for ($i = 0; $i < 10; $i++) {
-        insertUser(randomStringWithoutNum(5), md5(randomString(10)), randomStringWithoutNum(8), randomString(12), randomInt(2));
-    }
-
-    for ($i = 0; $i < 10; $i++) {
-        insertCarType(randomString(7), randomString(5));
-    }
-
-
-    for ($i = 0; $i < 10; $i++) {
-        insertLocation(randomString(7), randomString(5), randomInt(5));
-    }
-
-    $carTypes = sqlgetTypeOfCars();
-    $locations = sqlgetLocation();
-    if ($carTypes->num_rows > 0) {
-        if ($locations->num_rows > 0) {
-            while ($type = $carTypes->fetch_assoc()) {
-                while ($location = $locations->fetch_assoc()) {
-                    insertCar($location["locationid"], $type["typeid"], randomString(100));
-                }
-            }
-        }
-    }
-    $cars = sqlgetCars();
-    $users = sqlgetUser();
-    if ($cars->num_rows > 0) {
-        while ($car = $cars->fetch_assoc()) {
-
-            if ($users->num_rows > 0) {
-                $user = $users->fetch_assoc();
-                insertReservation("10-11-11", "11-11-11", 1, $user["username"], $car["carid"]);
-
-            }
-        }
-    }
-}
+//function populate()
+//{
+//
+//    for ($i = 0; $i < 10; $i++) {
+//        insertUser(randomStringWithoutNum(5), md5(randomString(10)), randomStringWithoutNum(8), randomString(12), randomInt(2));
+//    }
+//
+//    for ($i = 0; $i < 10; $i++) {
+//        insertCarType(randomString(7), randomString(5));
+//    }
+//
+//
+//    for ($i = 0; $i < 10; $i++) {
+//        insertLocation(randomString(7), randomString(5), randomInt(5));
+//    }
+//
+//    $carTypes = sqlgetTypeOfCars();
+//    $locations = sqlgetLocation();
+//    if ($carTypes->num_rows > 0) {
+//        if ($locations->num_rows > 0) {
+//            while ($type = $carTypes->fetch_assoc()) {
+//                while ($location = $locations->fetch_assoc()) {
+//                    insertCar($location["locationid"], $type["typeid"], randomString(100));
+//                }
+//            }
+//        }
+//    }
+//    $cars = sqlgetCars();
+//    $users = sqlgetUser();
+//    if ($cars->num_rows > 0) {
+//        while ($car = $cars->fetch_assoc()) {
+//
+//            if ($users->num_rows > 0) {
+//                $user = $users->fetch_assoc();
+//                insertReservation("10-11-11", "11-11-11", 1, $user["username"], $car["carid"]);
+//
+//            }
+//        }
+//    }
+//}
 
 function randomStringWithoutNum($size)
 {
@@ -91,7 +91,7 @@ function insertUser($uName, $pass, $name, $dln, $type)
 function insertCarType($comp, $model, $price)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`typeid`, `make`, `model`, `price`) VALUES (NULL, ?, ?, ?)');
+    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`typeid`, `make`, `model`, `price`, `img`) VALUES (NULL, ?, ?, ?, NULL)');
     $stmt->bind_param('ssi', $comp, $model, $price);
     $stmt->execute();
     $stmt->close();
@@ -100,7 +100,7 @@ function insertCarType($comp, $model, $price)
 function insertCar($loc, $type)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `CarInstance` (`carid`, `location`, `type`, `img`) VALUES (NULL, ?, ?, NULL)');
+    $stmt = $conn->prepare('INSERT INTO `CarInstance` (`carid`, `location`, `type`) VALUES (NULL, ?, ?)');
     $stmt->bind_param('ii', $loc, $type);
     $stmt->execute();
     $stmt->close();
@@ -136,13 +136,25 @@ function changeLocationOfCar($carid, $location)
 }
 
 function sqlgetCarsAtLocation($location){
-    $sql = "SELECT ci.carid AS id, toc.make AS make, toc.model AS model, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc ON toc.typeid = ci.type JOIN Location AS loc ON ci.location = loc.locationid WHERE ci.location = ".$location;
-    return sendQuery($sql);
+    global $conn;
+    $stmt = $conn->prepare("SELECT ci.carid AS id, toc.make AS make, toc.model AS model, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc ON toc.typeid = ci.type JOIN Location AS loc ON ci.location = loc.locationid WHERE ci.location = ?");
+    $stmt->bind_param('i', $location);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
+//    $sql = "SELECT ci.carid AS id, toc.make AS make, toc.model AS model, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc ON toc.typeid = ci.type JOIN Location AS loc ON ci.location = loc.locationid WHERE ci.location = ".$location;
+//    return sendQuery($sql);
 }
 
 function sqlCheckisRented($carID){
-    $sql = "SELECT res.username AS rentee FROM `CarInstance` AS ci JOIN Reservation AS res ON res.carid = ci.carid WHERE ci.carid = ".$carID;
-    return sendQuery($sql);
+    global $conn;
+    $stmt = $conn->prepare("SELECT res.username AS rentee FROM `CarInstance` AS ci JOIN Reservation AS res ON res.carid = ci.carid WHERE ci.carid = ?");
+    $stmt->bind_param('i', $carID);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
 }
 
 function removeCarById($carid){
@@ -211,8 +223,15 @@ function sqlgetReservation()
 }
 
 function getTypeFromMakeAndModel($make,$model){
-    $sql = "SELECT * FROM TypesOfCar WHERE make = '$make' AND model = '$model' ORDER BY make, model";
-    return sendQuery($sql);
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model");
+    $stmt->bind_param('ss', $make, $model);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
+//    $sql = "SELECT * FROM TypesOfCar WHERE make = '$make' AND model = '$model' ORDER BY make, model";
+//    return sendQuery($sql);
 }
 
 function sqlGetCarsWithFilter($make,$model){
@@ -228,10 +247,18 @@ function sqlGetCarsWithFilter($make,$model){
     return sendQuery($sql);
 }
 
-function validate($table,$element, $value){
-    $sql = "SELECT * FROM `$table` WHERE `$element` = `$value`";
-    $req = sendQuery($sql);
-    return ($req->num_rows > 0);
+function validateCarId($carId){
+    //TODO this is an issue when element and value aren't strings
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM `CarInstance` WHERE carid = ?");
+    $stmt->bind_param('i', $carId);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return ($outcome > 0);
+//    $sql = "SELECT * FROM `$table` WHERE `$element` = `$value`";
+//    $req = sendQuery($sql);
+//    return ($req->num_rows > 0);
 
 }//TODO make this accept reality
 
@@ -240,10 +267,14 @@ function input($field){
 }
 
 function checkLogin($username, $password){
-    $sql = "SELECT * FROM `User` WHERE `username` = '$username'";
-    $req = sendQuery($sql);
-    if($req -> num_rows > 0){
-        $reqq = $req -> fetch_assoc();
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM `User` WHERE `username` = ?");
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    if($outcome -> num_rows > 0){
+        $reqq = $outcome -> fetch_assoc();
         $pass = $reqq["password"];
         if(md5($password) === $pass){
             return true;
@@ -255,9 +286,10 @@ function checkLogin($username, $password){
 function addNewUser($username, $password, $dln, $name){
     $encPass = md5($password);
     global $conn;
-    $stmt = $conn->prepare($sql = "INSERT INTO `User` (`username`, `password`, `name`, `dln`, `type`) VALUES (?,?,?,?, '0')");
+    $stmt = $conn->prepare("INSERT INTO `User` (`username`, `password`, `name`, `dln`, `type`) VALUES (?,?,?,?, '0')");
     $stmt->bind_param('ssss', $username, $encPass, $name, $dln);
-    $outcome = $stmt->execute();
+    $stmt->execute();
+    $outcome = $stmt->get_result();
     $stmt->close();
     return $outcome;
     }
@@ -314,8 +346,15 @@ function sqlCheckValidDateForHire($location, $type, $start, $end){
 
 function sqlgetReservationFromCarID($carID)
 {
-    $sql = "SELECT * FROM `Reservation` WHERE carid = $carID";
-    return sendQuery($sql);
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM `Reservation` WHERE carid = ?");
+    $stmt->bind_param('i', $carID);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
+//    $sql = "SELECT * FROM `Reservation` WHERE carid = $carID";
+//    return sendQuery($sql);
 
 }
 

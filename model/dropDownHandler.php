@@ -23,10 +23,3 @@ if($var === "NA"){
 }else{
     echo '<option value="" selected>Any</option>';
 }
-
-/**
- * Created by IntelliJ IDEA.
- * User: mfb15135
- * Date: 17/11/2017
- * Time: 15:20
- */

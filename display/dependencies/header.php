@@ -71,6 +71,13 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
+    <script>
+        webshims.setOptions('forms-ext', {types: 'dates'});
+        webshims.polyfill('forms forms-ext');
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!--Load bootstrap's style sheet. It includes an opinionated reboot.-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
@@ -84,14 +91,6 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <!--needed for panels to work-->
     <!-- cdn for modernizr, if you haven't included it already -->
-    <script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
-    <!-- polyfiller file to detect and load polyfills -->
-    <script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
-    <script>
-        webshims.setOptions('waitReady', false);
-        webshims.setOptions('forms-ext', {types: 'date'});
-        webshims.polyfill('forms forms-ext');
-    </script>
 
     <!--needed for panels to work-->
     <meta charset="UTF-8">
@@ -133,9 +132,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
                     Admin tools
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="addCar.php">Add car</a>
-                    <a class="dropdown-item" href="addCarType.php">Add car type</a>
-                    <a class="dropdown-item" href="addLocation.php">Add location</a>
+                    <a class="dropdown-item" href="addActionsContainer.php">Add Field</a>
                     <a class="dropdown-item" href="carsInLocations.php">View Cars At Locations</a>
                 </div>
             </li>

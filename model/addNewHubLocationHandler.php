@@ -14,6 +14,6 @@ if($name !== "" && $phonenumber !== "" && $postc !== "") {
 }
 ?>
 </form>
-<script type="text/javascript">
-    document.getElementById('response').submit();
-</script>
+<!--<script type="text/javascript">-->
+<!--    document.getElementById('response').submit();-->
+<!--</script>-->
