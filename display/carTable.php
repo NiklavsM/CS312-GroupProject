@@ -3,6 +3,8 @@
 include_once "~../../../model/database.php";
 $maker = input("make");
 $model = input("model");
+$minPrice = input("minPrice");
+$maxPrice = input("maxPrice");
 $result = sqlGetCarsWithFilter($maker, $model);
 if ($result->num_rows > 0) {
     $resultArray = array();
