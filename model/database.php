@@ -286,10 +286,11 @@ function insertReservationByCar($location, $type, $username, $start, $end)
 
 function getInstancefromLocTyp($location, $type){
     global $conn;
-    $stmt = $conn->prepare($sql = "SELECT * FROM `CarInstance` WHERE location= ? AND type = ?");
+    $stmt = $conn->prepare("SELECT * FROM `CarInstance` WHERE location= ? AND type = ?");
     $stmt->bind_param('ii', $location,$type);
-    $outcome = $stmt->execute();
-    $stmt->close();
+     $stmt->execute();
+     $outcome = $stmt->get_result();
+     $stmt->close();
     return $outcome;
 }
 function sqlCheckValidDateForHire($location, $type, $start, $end){

@@ -55,7 +55,7 @@ include_once "dependencies/header.php";
                         <?php
                         $locations = sqlgetLocation();
                         while ($location = $locations->fetch_assoc()) {
-                            echo '<option value='.$location['locationid'].'>'.$location['name'].' - '.$location['postcode'].'</option>';
+                            echo '<option value="'.$location['locationid'].'">'.$location['name'].' - '.$location['postcode'].'</option>';
                         }
                         ?>
                     </select></td></tr>

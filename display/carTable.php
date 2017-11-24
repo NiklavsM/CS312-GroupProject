@@ -1,8 +1,8 @@
 <?php
 
 include_once "~../../../model/database.php";
-$maker= input("make");
-$model= input("model");
+$maker = input("make");
+$model = input("model");
 $result = sqlGetCarsWithFilter($maker, $model);
 if ($result->num_rows > 0) {
     $resultArray = array();
@@ -12,7 +12,7 @@ if ($result->num_rows > 0) {
 }
 if (isset($resultArray)) {
     ?>
-    <table name="Table" class ="table">
+    <table name="Table" class="table">
         </tr>
         <th>Maker</th>
         <th>Model</th>
@@ -25,9 +25,18 @@ if (isset($resultArray)) {
                 echo '<td>' . $row["model"] . '</td>';
                 echo '<td>£' . $row["price"] . '</td>';
                 echo '<td><img src="../img/GoodCar.jpg" alt="Luxury at its finest" height="90" width="90"></td>';
-                echo '<td><button class="btn btn-info">Rent</button></td>';
-                echo '<tr>';
+                echo '<td><form action="rentCar.php" method="post">';
+                echo '<input type = "hidden" name = "typeid" value = "' . $row["typeid"] . '" > ';
+                echo '<input type = "hidden" name = "make" value = "' . $row["make"] . '" > ';
+                echo '<input type = "hidden" name = "model" value = "' . $row["model"] . '" > ';
+                echo '<input type = "hidden" name = "price" value = "' . $row["price"] . '" > ';
+                echo '<input type = "submit" value = "Rent" > ';
+                echo '</form ></td > ';
+                echo '<tr > ';
             }
             ?>
     </table>
 <?php }
+
+
+
