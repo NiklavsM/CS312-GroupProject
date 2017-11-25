@@ -26,32 +26,35 @@ include_once "dependencies/header.php";
                     .always(function() {
                     });
             });
-            $('#submitAddType').on('click', function () {
+            $('#addTypeForm').on('submit', function (e) {
+                e.preventDefault();
                 if(validateTypeForm()){
-                    var make = $('#make').val();
-                    var model = $('#model').val();
-                    var price = $('#price').val();
+                    var form_data = new FormData($('#addTypeForm')[0]);
                     $.ajax({
                         url: '~/../../model/addCarTypeHandler.php',
                         type: 'post',
-                        data: {'make': make, 'model':model, 'price':price}
-                    }).done(function(msg) {
-                        document.getElementById('msgType').innerHTML = "";
-                        if(msg === "Success"){
-                            document.getElementById('msgType').innerHTML = "Car Type Successfully Added.";
-                            document.getElementById("addTypeDiv").className = "panel panel-primary";
-                        }else{
-                            document.getElementById('msgType').innerHTML = "Error adding Car Type.";
-                            document.getElementById("addTypeDiv").className = "panel panel-danger";
+                        processData: false,
+                        contentType: false,
+                        async: false,
+                        cache: false,
+                        data: form_data,
+                        success: function(msg){
+                            document.getElementById('msgType').innerHTML = "";
+                            if(msg === "Success"){
+                                document.getElementById('msgType').innerHTML = "Car Type Successfully Added.";
+                                document.getElementById("addTypeDiv").className = "panel panel-primary";
+                            }else{
+                                document.getElementById('msgType').innerHTML = msg;
+                                document.getElementById("addTypeDiv").className = "panel panel-danger";
+                            }
                         }
-                    })
-                        .fail(function() { alert("error"); })
-                        .always(function() {
-                        });
+                    });
                 }
             });
-            $('#submitAddCar').on('click', function () {
+            $('#addCarForm').on('submit', function (e) {
+                e.preventDefault();
                 if(validateCarForm()){
+
                     var make = $('#makeincar').val();
                     var location = $('#location').val();
                     var model = $('#modelincar').val();
@@ -66,7 +69,7 @@ include_once "dependencies/header.php";
                             document.getElementById('msgCar').innerHTML = "Car Successfully Added.";
                             document.getElementById("addCarDiv").className = "panel panel-primary";
                         }else{
-                            document.getElementById('msgCar').innerHTML = "Error adding Car.";
+                            document.getElementById('msgCar').innerHTML = msg;
                             document.getElementById("addCarDiv").className = "panel panel-danger";
                         }
                     })
@@ -74,8 +77,10 @@ include_once "dependencies/header.php";
                         .always(function() {
                         });
                 }
+
             });
-            $('#submitAddLoc').on('click', function () {
+            $('#addLocForm').on('submit', function (e) {
+                e.preventDefault();
                 if(validateLocationForm()){
                     var name = $('#name').val();
                     var number = $('#phoneNumber').val();
@@ -90,7 +95,7 @@ include_once "dependencies/header.php";
                             document.getElementById('msgLoc').innerHTML = "Location Successfully Added.";
                             document.getElementById("addLocDiv").className = "panel panel-primary";
                         }else{
-                            document.getElementById('msgLoc').innerHTML = "Error adding Location.";
+                            document.getElementById('msgLoc').innerHTML = msg;
                             document.getElementById("addLocDiv").className = "panel panel-danger";
                         }
                     })
@@ -145,6 +150,9 @@ include_once "dependencies/header.php";
             var make = $('#make').val();
             var model = $('#model').val();
             var price = $('#price').val();
+            var file_data = $('#fileToUpload').prop('files')[0];
+//            console.log(file_data);
+//            return false;
             var type = "Type";
 
             document.getElementById('msgType').innerHTML = "";
@@ -164,7 +172,7 @@ include_once "dependencies/header.php";
                 <div class="panel-heading">Add Car</div>
                 <div class="panel-body">
                     <div id="msgCar"></div>
-<!--                    <form method="post" action="~/../../model/addCarInstanceHandler.php" onsubmit="validateCarForm(event)">-->
+                    <form id="addCarForm" method="post">
                         <table>
                             <tr><td>Location:</td><td><select id="location" name = "location">
                                         <option value="" selected disabled>Please Select</option>
@@ -189,7 +197,7 @@ include_once "dependencies/header.php";
                                     </select></td></tr>
                             <tr><td><input id="submitAddCar" type="submit" value="Add" class="btn btn-success"></td></tr>
                         </table>
-<!--                    </form>-->
+                    </form>
                 </div>
             </div></div>
         <div class="col-sm-4">
@@ -197,28 +205,29 @@ include_once "dependencies/header.php";
                 <div class="panel-heading">Add CarType</div>
                 <div class="panel-body">
                     <div id="msgType"></div>
-<!--                    <form method="post" action="~/../../model/addCarTypeHandler.php" onsubmit="validateTypeForm(event)">-->
+                    <form id="addTypeForm" method="post" enctype="multipart/form-data">
                         <table>
                             <tr><td>Make:      </td><td><input type ="text" id="make" name="make">        </td></tr>
                             <tr><td>Model:        </td><td><input type ="text" id="model" name="model">          </td></tr>
                             <tr><td>Price Per Day:</td><td><input type ="number" id="price" name="price" min="0" step="0.01"></td></tr>
+                            <tr><td>Car Image: </td><td><input type="file" name="fileToUpload" id="fileToUpload" required></td></tr>
                             <tr><td><input id="submitAddType" type="submit" value="Add" class="btn btn-success">         </td></tr>
                         </table>
-<!--                    </form>-->
+                    </form>
                 </div></div></div>
         <div class="col-sm-4">
             <div id="addLocDiv" class="panel panel-primary">
                 <div class="panel-heading">Add Location</div>
                 <div class="panel-body">
                     <div id="msgLoc"></div>
-<!--                    <form method="post" action="~/../../model/addNewHubLocationHandler.php" onsubmit="validateLocationForm(event)">-->
+                    <form id="addLocForm" method="post">
                         <table>
                             <tr><td>Name:        </td><td><input type ="text" id="name" name="name">       </td></tr>
                             <tr><td>Phone Number:</td><td><input type ="text" id="phoneNumber" name="phoneNumber"></td></tr>
                             <tr><td>Post Code:   </td><td><input type ="text" id="postcode" name="postcode">   </td></tr>
                             <tr><td><input id="submitAddLoc" type="submit" value="Add" class="btn btn-success">    </td></tr>
                         </table>
-<!--                    </form>-->
+                    </form>
                 </div></div></div>
     </div>
 

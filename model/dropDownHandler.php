@@ -7,7 +7,7 @@ $addCar = input("addCar");
 //echo  "Got :".$var." At php";
 if($var === "" && $addCar === "true"){
     echo '<option value="">Please Select</option>';
-}else if(!isset($addCar) && $var === ""){
+}else if($addCar === "" && $var === ""){
     echo '<option value="" selected>Any</option>';
 }else if($var !== ""){
 
@@ -18,7 +18,7 @@ if($var === "" && $addCar === "true"){
         $html = "";
     }
     while ($type = $carTypes->fetch_assoc()) {
-        $varb = $html.'<option value='.$type['model'].'>'.$type['model'].'</option>';
+        $varb = $html.'<option value="'.$type['model'].'">'.$type['model'].'</option>';
         $html = $varb;
     }
     echo $html;

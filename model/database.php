@@ -88,11 +88,11 @@ function insertUser($uName, $pass, $name, $dln, $type)
     $stmt->close();
 }
 
-function insertCarType($comp, $model, $price)
+function insertCarType($comp, $model, $price, $img)
 {
     global $conn;
-    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`typeid`, `make`, `model`, `price`, `img`) VALUES (NULL, ?, ?, ?, NULL)');
-    $stmt->bind_param('ssi', $comp, $model, $price);
+    $stmt = $conn->prepare('INSERT INTO `TypesOfCar` (`typeid`, `make`, `model`, `price`, `img`) VALUES (NULL, ?, ?, ?, ?)');
+    $stmt->bind_param('ssis', $comp, $model, $price, $img);
     $stmt->execute();
     $stmt->close();
 }
