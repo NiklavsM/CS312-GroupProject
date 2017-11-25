@@ -233,17 +233,23 @@ function getTypeFromMakeAndModel($make,$model){
 //    return sendQuery($sql);
 }
 
-function sqlGetCarsWithFilter($make,$model){
-    if($make != null && $model != null) {
-        $sql = "SELECT * FROM TypesOfCar WHERE make = '$make' AND model = '$model' ORDER BY make, model";
+function sqlGetCarsWithFilter($make,$model)
+{
+    global $conn;
+    if ($make != null && $model != null) {
+        $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model");
+        $stmt->bind_param('ss', $make,$model);
+    } else if ($make != null) {
+        $stmt = $conn->prepare("SELECT * FROM `TypesOfCar` WHERE make = ? ORDER BY make, model");
+        $stmt->bind_param('s', $make);
+    } else {
+        $sql = "SELECT * FROM `TypesOfCar` ORDER BY make, model";
         return sendQuery($sql);
     }
-    if($make != null){
-        $sql = "SELECT * FROM `TypesOfCar` WHERE make = '$make' ORDER BY make, model";
-        return sendQuery($sql);
-    }
-    $sql = "SELECT * FROM `TypesOfCar` ORDER BY make, model";
-    return sendQuery($sql);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
 }
 
 function validateCarId($carId){
@@ -294,24 +300,19 @@ function addNewUser($username, $password, $dln, $name){
     }
 
 
-function sendQuery($query)
-{
-    global $conn;
-    $result = $conn->query($query);
-    if ($conn->connect_error) {
-        return $conn->error;
-    }
-    return $result;
-}
+
 
 function insertReservationByCar($location, $type, $username, $start, $end)
 {
-    if($carId = sqlCheckValidDateForHire($location, $type, $start, $end) != -1) {
+    $carId = sqlCheckValidDateForHire($location, $type, $start, $end);
+    if( $carId != -1) {
         global $conn;
         $stmt = $conn->prepare('INSERT INTO `Reservation` (`reservationid`, `startdate`, `enddate`, `active`, `username`, `carid`) VALUES (NULL, ?, ?, 1, ?, ?)');
         $stmt->bind_param('sssi', $start, $end, $username, $carId);
         $stmt->execute();
         $stmt->close();
+    } else {
+        return false;
     }
 }
 
@@ -328,10 +329,11 @@ function sqlCheckValidDateForHire($location, $type, $start, $end){
     $req = getInstancefromLocTyp($location, $type);
     if ($req->num_rows > 0) {
         while ($carID = $req->fetch_assoc()) {
-            $reqq = sqlgetReservationFromCarID($carID["carid"]);
+            $car = $carID["carid"];
+            $reqq = sqlgetReservationFromCarID($car);
             if ($reqq->num_rows > 0) {
                 while($reservation = $reqq ->fetch_assoc()){
-                    if(!(($start < $reservation["enddate"] && $end > $reservation["enddate"]) || ($start < $reservation["startdate"] && $end > $reservation["startdate"]) )){
+                    if(!(($start <= $reservation["enddate"] && $end >= $reservation["enddate"]) || ($start <= $reservation["startdate"] && $end >= $reservation["startdate"]) )){
                         return $carID["carid"];
                     }
                 }
@@ -341,6 +343,7 @@ function sqlCheckValidDateForHire($location, $type, $start, $end){
             }
         }
     }
+    return -1;
 }
 
 function sqlgetReservationFromCarID($carID)
@@ -355,6 +358,17 @@ function sqlgetReservationFromCarID($carID)
 //    $sql = "SELECT * FROM `Reservation` WHERE carid = $carID";
 //    return sendQuery($sql);
 
+}
+
+
+function sendQuery($query)
+{
+    global $conn;
+    $result = $conn->query($query);
+    if ($conn->connect_error) {
+        return $conn->error;
+    }
+    return $result;
 }
 
 
