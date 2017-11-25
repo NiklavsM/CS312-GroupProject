@@ -233,17 +233,23 @@ function getTypeFromMakeAndModel($make,$model){
 //    return sendQuery($sql);
 }
 
-function sqlGetCarsWithFilter($make,$model){
-    if($make != null && $model != null) {
-        $sql = "SELECT * FROM TypesOfCar WHERE make = '$make' AND model = '$model' ORDER BY make, model";
+function sqlGetCarsWithFilter($make,$model)
+{
+    global $conn;
+    if ($make != null && $model != null) {
+        $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model");
+        $stmt->bind_param('ss', $make,$model);
+    } else if ($make != null) {
+        $stmt = $conn->prepare("SELECT * FROM `TypesOfCar` WHERE make = ? ORDER BY make, model");
+        $stmt->bind_param('s', $make);
+    } else {
+        $sql = "SELECT * FROM `TypesOfCar` ORDER BY make, model";
         return sendQuery($sql);
     }
-    if($make != null){
-        $sql = "SELECT * FROM `TypesOfCar` WHERE make = '$make' ORDER BY make, model";
-        return sendQuery($sql);
-    }
-    $sql = "SELECT * FROM `TypesOfCar` ORDER BY make, model";
-    return sendQuery($sql);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
 }
 
 function validateCarId($carId){
@@ -294,15 +300,7 @@ function addNewUser($username, $password, $dln, $name){
     }
 
 
-function sendQuery($query)
-{
-    global $conn;
-    $result = $conn->query($query);
-    if ($conn->connect_error) {
-        return $conn->error;
-    }
-    return $result;
-}
+
 
 function insertReservationByCar($location, $type, $username, $start, $end)
 {
@@ -360,6 +358,17 @@ function sqlgetReservationFromCarID($carID)
 //    $sql = "SELECT * FROM `Reservation` WHERE carid = $carID";
 //    return sendQuery($sql);
 
+}
+
+
+function sendQuery($query)
+{
+    global $conn;
+    $result = $conn->query($query);
+    if ($conn->connect_error) {
+        return $conn->error;
+    }
+    return $result;
 }
 
 
