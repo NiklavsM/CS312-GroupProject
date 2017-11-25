@@ -306,12 +306,15 @@ function sendQuery($query)
 
 function insertReservationByCar($location, $type, $username, $start, $end)
 {
-    if($carId = sqlCheckValidDateForHire($location, $type, $start, $end) != -1) {
+    $carId = sqlCheckValidDateForHire($location, $type, $start, $end);
+    if( $carId != -1) {
         global $conn;
         $stmt = $conn->prepare('INSERT INTO `Reservation` (`reservationid`, `startdate`, `enddate`, `active`, `username`, `carid`) VALUES (NULL, ?, ?, 1, ?, ?)');
         $stmt->bind_param('sssi', $start, $end, $username, $carId);
         $stmt->execute();
         $stmt->close();
+    } else {
+        return false;
     }
 }
 
@@ -328,10 +331,11 @@ function sqlCheckValidDateForHire($location, $type, $start, $end){
     $req = getInstancefromLocTyp($location, $type);
     if ($req->num_rows > 0) {
         while ($carID = $req->fetch_assoc()) {
-            $reqq = sqlgetReservationFromCarID($carID["carid"]);
+            $car = $carID["carid"];
+            $reqq = sqlgetReservationFromCarID($car);
             if ($reqq->num_rows > 0) {
                 while($reservation = $reqq ->fetch_assoc()){
-                    if(!(($start < $reservation["enddate"] && $end > $reservation["enddate"]) || ($start < $reservation["startdate"] && $end > $reservation["startdate"]) )){
+                    if(!(($start <= $reservation["enddate"] && $end >= $reservation["enddate"]) || ($start <= $reservation["startdate"] && $end >= $reservation["startdate"]) )){
                         return $carID["carid"];
                     }
                 }
@@ -341,6 +345,7 @@ function sqlCheckValidDateForHire($location, $type, $start, $end){
             }
         }
     }
+    return -1;
 }
 
 function sqlgetReservationFromCarID($carID)
