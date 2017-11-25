@@ -137,7 +137,7 @@ function changeLocationOfCar($carid, $location)
 
 function sqlgetCarsAtLocation($location){
     global $conn;
-    $stmt = $conn->prepare("SELECT ci.carid AS id, toc.make AS make, toc.model AS model, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc ON toc.typeid = ci.type JOIN Location AS loc ON ci.location = loc.locationid WHERE ci.location = ?");
+    $stmt = $conn->prepare("SELECT ci.carid AS id, toc.make AS make, toc.model AS model, toc.img AS img, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc ON toc.typeid = ci.type JOIN Location AS loc ON ci.location = loc.locationid WHERE ci.location = ?");
     $stmt->bind_param('i', $location);
     $stmt->execute();
     $outcome = $stmt->get_result();
@@ -199,7 +199,7 @@ function sqlgetCars()
 
 function sqlgetCarTypes()
 {
-    $sql = "SELECT ci.carid AS id, toc.make AS make, toc.model AS model, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc JOIN Location AS loc ON ci.location = loc.locationid WHERE toc.typeid = ci.type";
+    $sql = "SELECT ci.carid AS id, toc.make AS make, toc.model AS model, toc.img AS img, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc JOIN Location AS loc ON ci.location = loc.locationid WHERE toc.typeid = ci.type";
     return sendQuery($sql);
 }
 
@@ -207,7 +207,6 @@ function sqlgetUser()
 {
     $sql = "SELECT * FROM `User`";
     return sendQuery($sql);
-
 }
 
 function sqlGetCarsMakers(){

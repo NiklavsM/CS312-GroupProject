@@ -4,6 +4,7 @@ include_once "~../../../model/database.php";
 $locationID= input("location");
 //echo $location;
 $result = sqlgetCarsAtLocation($locationID);
+
 if($locationID === "NA"){
     $result = sqlgetCarTypes();
 }
@@ -44,7 +45,7 @@ if (isset($resultArray)) {
                 }
                 echo '<td>' . $row["make"] . '</td>';
                 echo '<td>' . $row["model"] . '</td>';
-                echo '<td><img src="../img/GoodCar.jpg" alt="Luxury at its finest" height="90" width="90"></td>';
+                echo '<td><img src="../img/'.$row["img"].'" alt="Luxury at its finest" height="90" width="90"></td>';
                 if($locationID === "NA"){
                     echo '<td>' . $row["location"] . '</td>';
                 }

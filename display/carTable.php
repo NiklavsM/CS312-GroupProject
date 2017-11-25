@@ -26,7 +26,7 @@ if (isset($resultArray)) {
                 echo '<td>' . $row["make"] . '</td>';
                 echo '<td>' . $row["model"] . '</td>';
                 echo '<td>£' . $row["price"] . '</td>';
-                echo '<td><img src="../img/GoodCar.jpg" alt="Luxury at its finest" height="90" width="90"></td>';
+                echo '<td><img src="../img/'.$row["img"].'" alt="Luxury at its finest" height="90" width="90"></td>';
                 echo '<td><form action="rentCar.php" method="post">';
                 echo '<input type = "hidden" name = "typeid" value = "' . $row["typeid"] . '" > ';
                 echo '<input type = "hidden" name = "make" value = "' . $row["make"] . '" > ';

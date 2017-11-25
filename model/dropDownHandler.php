@@ -7,7 +7,7 @@ $addCar = input("addCar");
 //echo  "Got :".$var." At php";
 if($var === "" && $addCar === "true"){
     echo '<option value="">Please Select</option>';
-}else if($addCar === ""){
+}else if(!isset($addCar) && $var === ""){
     echo '<option value="" selected>Any</option>';
 }else if($var !== ""){
 
