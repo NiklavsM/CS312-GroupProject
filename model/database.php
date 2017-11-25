@@ -149,7 +149,7 @@ function sqlgetCarsAtLocation($location){
 
 function sqlCheckisRented($carID){
     global $conn;
-    $stmt = $conn->prepare("SELECT res.username AS rentee FROM `CarInstance` AS ci JOIN Reservation AS res ON res.carid = ci.carid WHERE ci.carid = ?");
+    $stmt = $conn->prepare("SELECT res.username AS rentee FROM `CarInstance` AS ci JOIN Reservation AS res ON res.carid = ci.carid WHERE ci.carid = ? AND res.active = 1");
     $stmt->bind_param('i', $carID);
     $stmt->execute();
     $outcome = $stmt->get_result();

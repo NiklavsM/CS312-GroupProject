@@ -6,16 +6,10 @@ $comp  = input("make");
 $model = input("model");
 $price = input("price");
 
-?>
-<form id="response" action="~/../../display/addCarType.php" method="post">
-<?php
-
 if($comp !== "" && $model !== "" && $price !== ""){
-    insertCarType($comp, $model,$price);
+    insertCarType(strtoupper($comp), $model,$price);
+    echo "Success";
+}else{
+    echo "Failure";
 }
 
-?>
-</form>
-<!--<script type="text/javascript">-->
-<!--    document.getElementById('response').submit();-->
-<!--</script>-->

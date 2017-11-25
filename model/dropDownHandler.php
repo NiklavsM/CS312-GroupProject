@@ -2,11 +2,13 @@
 
 include_once "database.php";
 
-$var = input("maker");
+$var = input("make");
 $addCar = input("addCar");
 //echo  "Got :".$var." At php";
-if($var === "NA"){
-    echo '<option value="NA">Please Select</option>';
+if($var === "" && $addCar === "true"){
+    echo '<option value="">Please Select</option>';
+}else if($addCar === ""){
+    echo '<option value="" selected>Any</option>';
 }else if($var !== ""){
 
     $carTypes = sqlGetCarswithFilter($var,null);
@@ -20,6 +22,4 @@ if($var === "NA"){
         $html = $varb;
     }
     echo $html;
-}else{
-    echo '<option value="" selected>Any</option>';
 }

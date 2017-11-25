@@ -10,21 +10,94 @@ include_once "dependencies/header.php";
 
     <script>
         $(function(){
-            $('#make').on('change',function() {
+            $('#makeincar').on('change',function() {
                 //get current selected item from carMaker
-                var f = $('#make').val();
+                var f = $('#makeincar').val();
                 //send f to dropDownHandler
                 $.ajax({
                     url: '~/../../model/dropDownHandler.php',
                     type: 'post',
-                    data: {'maker': f, 'addCar':"true"}
+                    data: {'make': f, 'addCar':"true"}
                 }).done(function(msg) {
                     //insert html into selection
-                    document.getElementById('model').innerHTML = msg;
+                    document.getElementById('modelincar').innerHTML = msg;
                 })
                     .fail(function() { alert("error"); })
                     .always(function() {
                     });
+            });
+            $('#submitAddType').on('click', function () {
+                if(validateTypeForm()){
+                    var make = $('#make').val();
+                    var model = $('#model').val();
+                    var price = $('#price').val();
+                    $.ajax({
+                        url: '~/../../model/addCarTypeHandler.php',
+                        type: 'post',
+                        data: {'make': make, 'model':model, 'price':price}
+                    }).done(function(msg) {
+                        document.getElementById('msgType').innerHTML = "";
+                        if(msg === "Success"){
+                            document.getElementById('msgType').innerHTML = "Car Type Successfully Added.";
+                            document.getElementById("addTypeDiv").className = "panel panel-primary";
+                        }else{
+                            document.getElementById('msgType').innerHTML = "Error adding Car Type.";
+                            document.getElementById("addTypeDiv").className = "panel panel-danger";
+                        }
+                    })
+                        .fail(function() { alert("error"); })
+                        .always(function() {
+                        });
+                }
+            });
+            $('#submitAddCar').on('click', function () {
+                if(validateCarForm()){
+                    var make = $('#makeincar').val();
+                    var location = $('#location').val();
+                    var model = $('#modelincar').val();
+                    $.ajax({
+                        url: '~/../../model/addCarInstanceHandler.php',
+                        type: 'post',
+                        data: {'make': make, 'model':model, 'location':location}
+                    }).done(function(msg) {
+                        console.log("Message: " + msg);
+                        document.getElementById('msgCar').innerHTML = "";
+                        if(msg === "Success"){
+                            document.getElementById('msgCar').innerHTML = "Car Successfully Added.";
+                            document.getElementById("addCarDiv").className = "panel panel-primary";
+                        }else{
+                            document.getElementById('msgCar').innerHTML = "Error adding Car.";
+                            document.getElementById("addCarDiv").className = "panel panel-danger";
+                        }
+                    })
+                        .fail(function() { alert("error"); })
+                        .always(function() {
+                        });
+                }
+            });
+            $('#submitAddLoc').on('click', function () {
+                if(validateLocationForm()){
+                    var name = $('#name').val();
+                    var number = $('#phoneNumber').val();
+                    var postcode = $('#postcode').val();
+                    $.ajax({
+                        url: '~/../../model/addNewHubLocationHandler.php',
+                        type: 'post',
+                        data: {'name': name, 'number':number, 'postcode':postcode}
+                    }).done(function(msg) {
+                        document.getElementById('msgLoc').innerHTML = "";
+                        if(msg === "Success"){
+                            document.getElementById('msgLoc').innerHTML = "Location Successfully Added.";
+                            document.getElementById("addLocDiv").className = "panel panel-primary";
+                        }else{
+                            document.getElementById('msgLoc').innerHTML = "Error adding Location.";
+                            document.getElementById("addLocDiv").className = "panel panel-danger";
+                        }
+                    })
+                        .fail(function() { alert("error"); })
+                        .always(function() {
+                        });
+                }
             });
         });
 
@@ -37,7 +110,7 @@ include_once "dependencies/header.php";
             return true;
         }
 
-        function validateCarForm(event){
+        function validateCarForm(){
             var make = $('#makeincar').val();
             var location = $('#location').val();
             var car = "Car";
@@ -45,14 +118,13 @@ include_once "dependencies/header.php";
             document.getElementById('msgCar').innerHTML = "";
 
             if(!(validateDupe(make, "Please select a car make", car) && validateDupe(location,"Please select a location" , car))){
-                event.preventDefault();
                 return false;
             }
             document.getElementById("addCarDiv").className = "panel panel-primary";
             return true;
         }
 
-        function validateLocationForm(event){
+        function validateLocationForm(){
             var name = $('#name').val();
             var number = $('#phoneNumber').val();
             var postcode = $('#postcode').val();
@@ -61,17 +133,15 @@ include_once "dependencies/header.php";
             document.getElementById('msgLoc').innerHTML = "";
 
             if(!(validateDupe(name, "Please enter a location name", loc) && validateDupe(postcode,"Please enter the Post code of the location" , loc))){
-                event.preventDefault();
                 return false;
             }else if(!validateDupe(number, "Please enter a valid phone number", loc) || !number.match(/^\d+$/)){
-                event.preventDefault();
                 return false;
             }
             document.getElementById("addLocDiv").className = "panel panel-primary";
             return true;
         }
 
-        function validateTypeForm(event){
+        function validateTypeForm(){
             var make = $('#make').val();
             var model = $('#model').val();
             var price = $('#price').val();
@@ -80,7 +150,6 @@ include_once "dependencies/header.php";
             document.getElementById('msgType').innerHTML = "";
 
             if(!(validateDupe(make, "Please enter a car make", type) && validateDupe(model, "Please enter a car model", type) && validateDupe(price,"Please enter a Price for renting" , type))){
-                event.preventDefault();
                 return false;
             }
             document.getElementById("addTypeDiv").className = "panel panel-primary";
@@ -95,7 +164,7 @@ include_once "dependencies/header.php";
                 <div class="panel-heading">Add Car</div>
                 <div class="panel-body">
                     <div id="msgCar"></div>
-                    <form method="post" action="~/../../model/addCarInstanceHandler.php" onsubmit="validateCarForm(event)">
+<!--                    <form method="post" action="~/../../model/addCarInstanceHandler.php" onsubmit="validateCarForm(event)">-->
                         <table>
                             <tr><td>Location:</td><td><select id="location" name = "location">
                                         <option value="" selected disabled>Please Select</option>
@@ -118,36 +187,39 @@ include_once "dependencies/header.php";
                             <tr><td>Model:</td><td><select id="modelincar" name ="model">
                                         <option value="">Please Select</option>
                                     </select></td></tr>
-                            <tr><td><input type="submit" value="Add" class="btn btn-success"></td></tr>
+                            <tr><td><input id="submitAddCar" type="submit" value="Add" class="btn btn-success"></td></tr>
                         </table>
-                    </form></div>
+<!--                    </form>-->
+                </div>
             </div></div>
         <div class="col-sm-4">
             <div id="addTypeDiv" class="panel panel-primary">
                 <div class="panel-heading">Add CarType</div>
                 <div class="panel-body">
                     <div id="msgType"></div>
-                    <form method="post" action="~/../../model/addCarTypeHandler.php" onsubmit="validateTypeForm(event)">
+<!--                    <form method="post" action="~/../../model/addCarTypeHandler.php" onsubmit="validateTypeForm(event)">-->
                         <table>
                             <tr><td>Make:      </td><td><input type ="text" id="make" name="make">        </td></tr>
                             <tr><td>Model:        </td><td><input type ="text" id="model" name="model">          </td></tr>
                             <tr><td>Price Per Day:</td><td><input type ="number" id="price" name="price" min="0" step="0.01"></td></tr>
-                            <tr><td><input type="submit" value="Add" class="btn btn-success">         </td></tr>
+                            <tr><td><input id="submitAddType" type="submit" value="Add" class="btn btn-success">         </td></tr>
                         </table>
-                    </form></div></div></div>
+<!--                    </form>-->
+                </div></div></div>
         <div class="col-sm-4">
             <div id="addLocDiv" class="panel panel-primary">
                 <div class="panel-heading">Add Location</div>
                 <div class="panel-body">
                     <div id="msgLoc"></div>
-                    <form method="post" action="~/../../model/addNewHubLocationHandler.php" onsubmit="validateLocationForm(event)">
+<!--                    <form method="post" action="~/../../model/addNewHubLocationHandler.php" onsubmit="validateLocationForm(event)">-->
                         <table>
                             <tr><td>Name:        </td><td><input type ="text" id="name" name="name">       </td></tr>
                             <tr><td>Phone Number:</td><td><input type ="text" id="phoneNumber" name="phoneNumber"></td></tr>
                             <tr><td>Post Code:   </td><td><input type ="text" id="postcode" name="postcode">   </td></tr>
-                            <tr><td><input type="submit" value="Add" class="btn btn-success">    </td></tr>
+                            <tr><td><input id="submitAddLoc" type="submit" value="Add" class="btn btn-success">    </td></tr>
                         </table>
-                    </form></div></div></div>
+<!--                    </form>-->
+                </div></div></div>
     </div>
 
 

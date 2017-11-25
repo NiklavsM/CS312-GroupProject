@@ -11,7 +11,7 @@ include_once "dependencies/header.php";
             $.ajax({
                 url: '~/../../model/dropDownHandler.php',
                 type: 'post',
-                data: {'maker': f}
+                data: {'make': f}
             }).done(function(msg) {
                 //insert html into selection
                 document.getElementById('model').innerHTML = msg;
