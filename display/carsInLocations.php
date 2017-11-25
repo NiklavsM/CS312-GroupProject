@@ -7,20 +7,30 @@ include_once "dependencies/header.php";
             $('#location').on('change',function() {
                 refresh();
             });
+            $('input[type=radio][name=optradio]').change(function() {
+                refresh();
+            });
         });
 
-        function transfer(button){
-            console.log("button clicked");
+        function stopRent(button){
             var id = $(button).val();
-//            var f = document.getElementById("transferList" + id).valueOf();
-            var e = document.getElementById("transferList" + id);
-            var f = e.options[e.selectedIndex].value;
-//            var f = $('#transferList').val();
-            console.log("id:" + id + " f:"+f);
+            console.log("got here with:"+ id);
+//            $.ajax({
+//                url: 'transferCar.php',
+//                type: 'post',
+//                data: {'id': id}
+//            }).done(function(msg) {
+//                refresh();
+//            });
+        }
+
+        function transfer(id, locationid){
+            console.log("button clicked");
+            console.log("id:" + id + " locationid:"+locationid);
             $.ajax({
                 url: 'transferCar.php',
                 type: 'post',
-                data: {'transfer': f, 'id':id}
+                data: {'locationid': locationid, 'id':id}
             }).done(function(msg) {
                 refresh();
             })
@@ -32,11 +42,12 @@ include_once "dependencies/header.php";
 
         function refresh(){
             var f = $('#location').val();
+            var radio = $("input[name=optradio]:checked").val();
             //send f to dropDownHandler
             $.ajax({
                 url: 'instanceTable.php',
                 type: 'post',
-                data: {'location': f}
+                data: {'location': f, 'filter': radio}
             }).done(function(msg) {
                 //insert html into selection
                 document.getElementById('tableResponsePlaceHolder').innerHTML = msg;
@@ -64,39 +75,42 @@ include_once "dependencies/header.php";
                 });
         }
     </script>
-
-
-    <h1>Cars At Location</h1>
-    <div class="row">
-        <div class="col-sm-2">
-            <div class="panel panel-info">
-                <div class="panel-heading">Filter</div>
-                <div class="panel-body">
-                    <form id="selectCarLocationForm" method="post">
-                        <table>
-                            <tr><td>Location:</td><td><select id="location" name = "location">
-                                        <option value="" selected disabled>Please Select</option>
-                                        <option value="NA">All</option>
-                                        <?php
-                                        $locations = sqlgetLocation();
-                                        while ($location = $locations->fetch_assoc()) {
-                                            echo '<option value="'.$location['locationid'].'">'.$location['name'].' - '.$location['postcode'].'</option>';
-                                        }
-                                        ?>
-                                    </select></td></tr>
-                        </table>
-                    </form>
+<!--    <div class="row">-->
+<!--        <div class="col-md-6">-->
+<!--            <div class="row">-->
+                <div class="col-sm-12">
+                    <h1>Cars At Location</h1>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Filter</div>
+                        <div class="panel-body">
+<!--                            <form id="selectCarLocationForm" method="post">-->
+                                <table>
+                                    <tr><td>Location:</td><td><select id="location" name = "location">
+                                                <option value="" selected disabled>Please Select</option>
+                                                <option value="NA">All</option>
+                                                <?php
+                                                $locations = sqlgetLocation();
+                                                while ($location = $locations->fetch_assoc()) {
+                                                    echo '<option value="'.$location['locationid'].'">'.$location['name'].' - '.$location['postcode'].'</option>';
+                                                }
+                                                ?>
+                                            </select></td></tr>
+                                </table>
+                                <label class="radio-inline"><input type="radio" name="optradio" value="1" checked="checked">All</label>
+                                <label class="radio-inline"><input type="radio" name="optradio" value="2">Available</label>
+                                <label class="radio-inline"><input type="radio" name="optradio" value="3">Rented</label>
+                            <!--                            </form>-->
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-sm-10">
-            <h2>Selected cars</h2>
-            <div id="tableResponsePlaceHolder">
-
-            </div>
-
-        </div>
+<!--            </div>-->
+<!--            <div class="col-md-6">-->
+    <div class="col-sm-6">
+        <div id="tableResponsePlaceHolder"></div>
     </div>
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 <?php
 include_once "dependencies/footer.php";

@@ -3,7 +3,7 @@ include_once "~../../../model/database.php";
 
 
 $carid    = input("id");
-$location   = input("transfer");
+$location   = input("locationid");
 
 if(isset($_POST['delete'])){
     removeCarById($carid);

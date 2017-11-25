@@ -2,6 +2,7 @@
 include_once "~../../../model/database.php";
 
 $locationID= input("location");
+$option = input("filter");
 //echo $location;
 $result = sqlgetCarsAtLocation($locationID);
 
@@ -18,7 +19,7 @@ if (isset($resultArray)) {
     ?>
     <table name="Table" class ="table">
         </tr>
-        <th>Remove Car</th>
+        <th></th>
         <th>Make</th>
         <th>Model</th>
         <th></th>
@@ -30,40 +31,55 @@ if (isset($resultArray)) {
         }
         ?>
         <th>Rented By</th>
-        <th>Transfer</th>
-        <th>Send To</th>
+        <th></th>
         <tr>
             <?php
             foreach ($resultArray as $row) {
+
                 $rentingResult = sqlCheckisRented($row['id']);
                 $rented = $rentingResult->fetch_assoc();
-                echo '</tr>';
-                if(!isset($rented["rentee"])){
-                    echo '<td><button class="btn btn-info" value="'.$row['id'].'" onclick="handleDelete(this)">Delete</button></td>';
-                }else{
-                    echo '<td></td>';
-                }
-                echo '<td>' . $row["make"] . '</td>';
-                echo '<td>' . $row["model"] . '</td>';
-                echo '<td><img src="../img/'.$row["img"].'" alt="Luxury at its finest" height="90" width="90"></td>';
-                if($locationID === "NA"){
-                    echo '<td>' . $row["location"] . '</td>';
-                }
-                if(isset($rented["rentee"])){
-                    echo '<td>'.$rented["rentee"].'</td>';
-                }else{
-                    echo '<td>Currently Available</td>';
-                    echo '<td><button class="btn btn-info" id="transferButton" value="'.$row['id'].'" onclick="transfer(this)">Transfer</button></td>';
-                    echo '<td><select id="transferList'.$row['id'].'">';
-                    $locations = sqlgetLocation();
-                    while ($location = $locations->fetch_assoc()) {
-                        if($location['name'] !== $row["location"]){
-                            echo '<option value="'.$location['locationid'].'">'.$location['name'].' - '.$location['postcode'].'</option>';
-                        }
+                $isRented = isset($rented["rentee"]);
+                if($option === "1" || $isRented && $option === "3" || !$isRented && $option === "2"){
+                    echo '<tr>';
+                    if($isRented){
+                        echo '<td></td>';
+                    }else{
+                        echo '<td><button class="btn btn-danger" value="'.$row['id'].'" onclick="handleDelete(this)">Delete</button></td>';
                     }
-                    echo '</select></td>';
+                    echo '<td>' . $row["make"] . '</td>';
+                    echo '<td>' . $row["model"] . '</td>';
+                    echo '<td><img src="../img/'.$row["img"].'" alt="Luxury at its finest" height="90" width="90"></td>';
+                    if($locationID === "NA"){
+                        echo '<td>' . $row["location"] . '</td>';
+                    }
+                    if($isRented){
+                        echo '<td>'.$rented["rentee"].'</td>';
+                        echo '<td><button class="btn btn-sm" id="stopRentButton" value="'.$row['id'].'" onclick="stopRent(this)">Recieved</button></td>';
+                    }else{
+                        echo '<td>Currently Available</td>';
+                        ?>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Transfer
+                                </button>
+                                <div class="dropdown-menu">
+                                    <?php
+                                    $locations = sqlgetLocation();
+                                    while ($location = $locations->fetch_assoc()) {
+                                        if($location['name'] !== $row["location"]){
+                                            echo '<a class="dropdown-item" href="javascript:;" onclick="transfer('.$row['id'].','.$location['locationid'].')">'.$location['name'].' - '.$location['postcode'].'</a>';
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </td>
+                        <?php
+                    }
+                    echo '</tr>';
                 }
-                echo '<tr>';
+
             }
             ?>
     </table>
