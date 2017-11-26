@@ -8,7 +8,7 @@ if(isset($_POST['reservUserName'])){
 }
 //https://www.youtube.com/watch?v=7jTgkTEDDog
 
-echo "<table>";
+echo "<table class='table'>";
 echo "<tr><td>User Name</td></td><td>Start Date</td><td>End Date</td><td>Make</td><td>Model</td><td>Location</td><td>Active</td></tr>";
 while ($fetch = $reservations->fetch_assoc()) {
     echo "<tr><td>" .

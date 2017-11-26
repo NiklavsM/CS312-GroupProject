@@ -1,5 +1,3 @@
-
-
 <?php
 include_once "dependencies/header.php";
 ?>
@@ -9,11 +7,11 @@ include_once "dependencies/header.php";
                     var values = $('#reservationUsername').val();
                     $.ajax(
                         {
-                            url  : '~/../../model/userReservationTable.php',
-                            type : 'post',
-                            data : {'reservUserName' : values}
+                            url: '~/../../model/userReservationTable.php',
+                            type: 'post',
+                            data: {'reservUserName': values}
                         }
-                    ).done(function (data){
+                    ).done(function (data) {
                         document.getElementById("userReservations").innerHTML = data;
                     });
                 }
@@ -22,7 +20,7 @@ include_once "dependencies/header.php";
     )
 </script>
 <?php
-if(isset($_POST['hiddenID'])){
+if (isset($_POST['hiddenID'])) {
     $id = input('hiddenID');
     invalidateReservation($id);
     echo "<p>Maddened the evil dragon</p>";
@@ -30,22 +28,36 @@ if(isset($_POST['hiddenID'])){
 if ($successfulLogin && isset($_SESSION['username'])) {
     if (getUserRights($_SESSION['username'] > 0)) {
         ?>
-        <form id="reservationRemove" method="post">
-            User:
-            <select id="reservationUsername" name="reservationUsername">
-                <option value="" selected>All</option>
+        <h1>Reservations</h1>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Filter</div>
+                    <div class="panel-body">
+                        <form id="reservationRemove" method="post">
+                            User:
+                            <select id="reservationUsername" name="reservationUsername">
+                                <option value="" selected>All</option>
+                                <?php
+                                $users = sqlGetUsers();
+                                while ($user = $users->fetch_assoc()) {
+                                    echo "<option value= " . $user["username"] . ">" . $user["username"] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-sm-12">
+            <div id="userReservations">
                 <?php
-                $users = sqlGetUsers();
-                while ($user = $users->fetch_assoc()) {
-                    echo "<option value= " . $user["username"] . ">" . $user["username"] . "</option>";
-                }
+                include_once '~/../../model/userReservationTable.php';
                 ?>
-            </select>
-        </form>
-        <div id="userReservations">
-            <?php
-            include_once '~/../../model/userReservationTable.php';
-            ?>
+            </div>
         </div>
         <?php
     } else {
