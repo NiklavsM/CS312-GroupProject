@@ -137,18 +137,26 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
                 </div>
             </li>
         </ul>
-        <a data-target="#register_box" class="nav-link menu_item" role="tab" data-toggle="modal">Register</a>
-        <a data-target="#login_box" class="nav-link menu_item" role="tab" data-toggle="modal">Login</a>
+        <?php
+        if (!isset($_SESSION['username'])) {
+            ?>
+            <a data-target="#register_box" class="nav-link menu_item" role="tab" data-toggle="modal">Register</a>
+            <a data-target="#login_box" class="nav-link menu_item" role="tab" data-toggle="modal">Login</a>
+            <?php
+        } else {
+            echo "<p>Logged in as ".$_SESSION['username']."</p>";
+        }
+        ?>
     </nav>
 
     <?php
-    if (!$successfulLogin) {
+    if (!isset($_SESSION['username'])) {
         include_once "modals/registration_modal.php";
     }
     ?>
 
     <?php
-    if (!$successfulLogin) {
+    if (!isset($_SESSION['username'])) {
         include_once "modals/login_modal.php";
     } ?>
 
