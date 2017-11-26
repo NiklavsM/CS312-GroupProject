@@ -350,7 +350,7 @@ function sqlCheckValidDateForHire($location, $type, $start, $end){
 function sqlgetReservationFromCarID($carID)
 {
     global $conn;
-    $stmt = $conn->prepare("SELECT * FROM `Reservation` WHERE carid = ?");
+    $stmt = $conn->prepare("SELECT * FROM `Reservation` WHERE carid = ? AND active = 1");
     $stmt->bind_param('i', $carID);
     $stmt->execute();
     $outcome = $stmt->get_result();
