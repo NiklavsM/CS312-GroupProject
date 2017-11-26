@@ -146,6 +146,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="addActionsContainer.php">Add Field</a>
                         <a class="dropdown-item" href="carsInLocations.php">View Cars At Locations</a>
+                        <a class="dropdown-item" href="manageReservations.php">Manage User Reservations</a>
                     </div>
                 </li>
                 <?php

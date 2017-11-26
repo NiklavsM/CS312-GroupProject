@@ -388,7 +388,7 @@ function getUserRights($username){ // They have no rights they are just our slav
 
 function getUserReservation($username){
     global $conn;
-    $stmt = $conn->prepare("SELECT startdate, enddate, model, make, name FROM `Reservation` AS r JOIN `CarInstance` AS ci JOIN `TypesOfCar` AS toc JOIN `Location` AS l ON r.carid = ci.carid AND ci.type = toc.typeid AND ci.location = l.locationid WHERE username =?");
+    $stmt = $conn->prepare("SELECT reservationid, startdate, enddate, model, make, name FROM `Reservation` AS r JOIN `CarInstance` AS ci JOIN `TypesOfCar` AS toc JOIN `Location` AS l ON r.carid = ci.carid AND ci.type = toc.typeid AND ci.location = l.locationid WHERE username =?  AND active = 1");
     $stmt->bind_param('s', $username);
     $stmt->execute();
     $outcome = $stmt->get_result();
@@ -396,5 +396,43 @@ function getUserReservation($username){
     return $outcome;
 }
 
+function getAdminUserReservation($username){
+    global $conn;
+    $stmt = $conn->prepare("SELECT active, reservationid, username, startdate, enddate, model, make, name FROM `Reservation` AS r JOIN `CarInstance` AS ci JOIN `TypesOfCar` AS toc JOIN `Location` AS l ON r.carid = ci.carid AND ci.type = toc.typeid AND ci.location = l.locationid WHERE username =?");
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
+}
+
+function getAllReservations(){
+    global $conn;
+    $stmt = $conn->prepare("SELECT active, reservationid, username, startdate, enddate, model, make, name FROM `Reservation` AS r JOIN `CarInstance` AS ci JOIN `TypesOfCar` AS toc JOIN `Location` AS l ON r.carid = ci.carid AND ci.type = toc.typeid AND ci.location = l.locationid");
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
+
+}
+
+
+function invalidateReservation($id){
+    global $conn;
+    $stmt = $conn->prepare('UPDATE `Reservation` SET active = 0 WHERE reservationid = ?');
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function sqlGetUsers(){
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM `User`");
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
+}
 
 

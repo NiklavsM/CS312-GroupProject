@@ -1,0 +1,59 @@
+
+
+<?php
+include_once "dependencies/header.php";
+?>
+<script>
+    $(function () {
+            $('#reservationUsername').on('change', function () {
+                    var values = $('#reservationUsername').val();
+                    $.ajax(
+                        {
+                            url  : '~/../../model/userReservationTable.php',
+                            type : 'post',
+                            data : {'reservUserName' : values}
+                        }
+                    ).done(function (data){
+                        document.getElementById("userReservations").innerHTML = data;
+                    });
+                }
+            )
+        }
+    )
+</script>
+<?php
+if(isset($_POST['hiddenID'])){
+    $id = input('hiddenID');
+    invalidateReservation($id);
+    echo "<p>Maddened the evil dragon</p>";
+}
+if ($successfulLogin && isset($_SESSION['username'])) {
+    if (getUserRights($_SESSION['username'] > 0)) {
+        ?>
+        <form id="reservationRemove" method="post">
+            User:
+            <select id="reservationUsername" name="reservationUsername">
+                <option value="" selected>All</option>
+                <?php
+                $users = sqlGetUsers();
+                while ($user = $users->fetch_assoc()) {
+                    echo "<option value= " . $user["username"] . ">" . $user["username"] . "</option>";
+                }
+                ?>
+            </select>
+        </form>
+        <div id="userReservations">
+            <?php
+            include_once '~/../../model/userReservationTable.php';
+            ?>
+        </div>
+        <?php
+    } else {
+        echo "<h3>You do not have the right access rights to access this section</h3>";
+    }
+} else {
+    echo "<h3>You do not have access to this section, log in to access</h3>";
+}
+
+
+include_once "dependencies/footer.php";
