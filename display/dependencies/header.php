@@ -128,6 +128,14 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
                 <a class="nav-link" href="cars.php">Cars</a>
             </li>
             <?php
+            if (isset($_SESSION['username'])) {
+                ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="userReservations.php">Reservations</a>
+                </li>
+
+                <?php
+            }
             if (isset($_SESSION['username']) && getUserRights($_SESSION['username']>0)) {
                 ?>
                 <li class="nav-item dropdown">
@@ -154,7 +162,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
         } else {
             echo "<p>Logged in as ".$_SESSION['username']."</p>";
             if(getUserRights($_SESSION['username']>0)){
-                echo "<p> in admin mode</p>";
+                echo "<p>, in admin mode</p>";
             }
         }
         ?>
