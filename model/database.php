@@ -384,7 +384,16 @@ function getUserRights($username){ // They have no rights they are just our slav
     } else {
         return -1;
     }
+}
 
+function getUserReservation($username){
+    global $conn;
+    $stmt = $conn->prepare("SELECT startdate, enddate, model, make, name FROM `Reservation` AS r JOIN `CarInstance` AS ci JOIN `TypesOfCar` AS toc JOIN `Location` AS l ON r.carid = ci.carid AND ci.type = toc.typeid AND ci.location = l.locationid WHERE username =?");
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    return $outcome;
 }
 
 
