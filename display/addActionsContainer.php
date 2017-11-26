@@ -173,7 +173,7 @@ include_once "dependencies/header.php";
                 <div class="panel-body">
                     <div id="msgCar"></div>
                     <form id="addCarForm" method="post">
-                        <table>
+                        <table class ="table">
                             <tr><td>Location:</td><td><select id="location" name = "location">
                                         <option value="" selected disabled>Please Select</option>
                                         <?php
@@ -206,7 +206,7 @@ include_once "dependencies/header.php";
                 <div class="panel-body">
                     <div id="msgType"></div>
                     <form id="addTypeForm" method="post" enctype="multipart/form-data">
-                        <table>
+                        <table class ="table">
                             <tr><td>Make:      </td><td><input type ="text" id="make" name="make">        </td></tr>
                             <tr><td>Model:        </td><td><input type ="text" id="model" name="model">          </td></tr>
                             <tr><td>Price Per Day:</td><td><input type ="number" id="price" name="price" min="0" step="0.01"></td></tr>
@@ -221,7 +221,7 @@ include_once "dependencies/header.php";
                 <div class="panel-body">
                     <div id="msgLoc"></div>
                     <form id="addLocForm" method="post">
-                        <table>
+                        <table class ="table">
                             <tr><td>Name:        </td><td><input type ="text" id="name" name="name">       </td></tr>
                             <tr><td>Phone Number:</td><td><input type ="text" id="phoneNumber" name="phoneNumber"></td></tr>
                             <tr><td>Post Code:   </td><td><input type ="text" id="postcode" name="postcode">   </td></tr>

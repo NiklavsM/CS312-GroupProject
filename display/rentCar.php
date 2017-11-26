@@ -5,57 +5,66 @@ $typeid = input("typeid");
 $maker = input("make");
 $model = input("model");
 $price = input("price");
+$img = input("img");
 
 if (isset($_SESSION['username'])) {
     ?>
-
+    <script type="text/javascript" src="js/rentCar.js"></script>
     <div class="panel panel-info">
         <div class="panel-heading">Checkout</div>
         <div class="panel-body">
-            <table>
-                <?php
-                echo '<tr>';
-                echo '<td>Make:</td>';
-                echo '<td>' . $maker . '</td>';
-                echo '</tr>';
-                echo '<tr>';
-                echo '<td>Model:</td>';
-                echo '<td>' . $model . '</td>';
-                echo '</tr>';
-                echo '<tr>';
-                echo '<td>Price Per Day:</td>';
-                echo '<td>' . $price . '</td>';
-                echo '</tr>';
-                echo '<form method="post" action="~/../../model/addRentACar.php" onsubmit="">';
+            <div class="row">
+                <div class="sm-col-4">
+                    <table class="table">
 
+                        <tr>
+                            <td>Make:</td>
+                            <td><?php echo $maker ?></td>
+                        </tr>
+                        <tr>
+                            <td>Model:</td>
+                            <td><?php echo $model ?></td>
+                        </tr>
+                        <tr>
+                            <td>Price Per Day:</td>
+                            <td id ="pricePerDayId"><?php echo $price ?></td>
+                        </tr>
 
-                echo '<tr>';
-                echo '<td>Date From:</td>';
-                echo '<td><input type="date" name="dateFrom" required></td>';
-                echo '</tr>';
-                echo '<tr>';
-                echo '<td>Date To:</td>';
-                echo '<td><input type="date" name="dateTo" required></td>';
-                echo '</tr>';
-                echo '<tr>';
-                echo '<tr>';
-                echo '<td>Location:</td><td><select id="location" name = "location" required>';
-                echo '<option value="NA" selected disabled>Please Select</option>';
-                $locations = sqlgetLocation();
-                while ($location = $locations->fetch_assoc()) {
-                    echo '<option value=' . $location['locationid'] . '>' . $location['name'] . ' - ' . $location['postcode'] . '</option>';
-                }
-                echo '</select></td></tr>';
-                echo '<input type="hidden" name="typeid" value="' . $typeid . ' ">';
-                echo '<input type="hidden" name="username" value="' . $_SESSION['username'] . '">';
+                        <form method="post" action="~/../../model/addRentACar.php" onsubmit="">
 
-                echo '<td><input type="submit" value="RENT" class="btn btn-success"></td>';
-                echo '</tr>';
+                            <tr>
+                                <td>Date From:</td>
+                                <td><input id = "dateFromId" type="date" name="dateFrom" required onchange="calculatePrice()"></td>
+                            </tr>
+                            <tr>
+                                <td>Date To:</td>
+                                <td><input id = "dateToId" type="date" name="dateTo" required onchange="calculatePrice()"></td>
+                            </tr>
 
+                                <?php
+                                echo'<tr>';
+                                echo '<td>Location:</td><td><select id="location" name = "location" required>';
+                                echo '<option value="NA" selected disabled>Please Select</option>';
+                                $locations = sqlgetLocation();
+                                while ($location = $locations->fetch_assoc()) {
+                                    echo '<option value=' . $location['locationid'] . '>' . $location['name'] . ' - ' . $location['postcode'] . '</option>';
+                                }
+                                echo '</select></td></tr>';
+                                echo '<input type="hidden" name="typeid" value="' . $typeid . ' ">';
+                                echo '<input type="hidden" name="username" value="' . $_SESSION['username'] . '">';
+                                echo '<td id="priceToPayId"></td>';
+                                echo '<td><input type="submit" value="RENT" class="btn btn-success pull-right"></td>';
+                                echo '</tr>';
 
-                echo '</form>'
-                ?>
-            </table>
+                                ?>
+                                </form>
+
+                    </table>
+                </div>
+                <div class="sm-col-4">
+                    <img src="../img/<?php echo $img; ?>" alt="Picture of car">;
+                </div>
+            </div>
         </div>
     </div>
 

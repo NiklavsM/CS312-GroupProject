@@ -34,6 +34,7 @@ if (isset($resultArray)) {
                 echo '<input type = "hidden" name = "make" value = "' . $row["make"] . '" > ';
                 echo '<input type = "hidden" name = "model" value = "' . $row["model"] . '" > ';
                 echo '<input type = "hidden" name = "price" value = "' . $row["price"] . '" > ';
+                echo '<input type = "hidden" name = "img" value = "' . $row["img"] . '" > ';
                 echo '<input type = "submit" class ="btn btn-success"value = "Rent" > ';
                 echo '</form ></td > ';
                 echo '<tr > ';
