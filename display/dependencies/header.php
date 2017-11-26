@@ -127,15 +127,23 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
             <li class="nav-item">
                 <a class="nav-link" href="cars.php">Cars</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Admin tools
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="addActionsContainer.php">Add Field</a>
-                    <a class="dropdown-item" href="carsInLocations.php">View Cars At Locations</a>
-                </div>
-            </li>
+            <?php
+            if (isset($_SESSION['username']) && getUserRights($_SESSION['username']>0)) {
+                ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false">
+                        Admin tools
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="addActionsContainer.php">Add Field</a>
+                        <a class="dropdown-item" href="carsInLocations.php">View Cars At Locations</a>
+                    </div>
+                </li>
+                <?php
+            }
+            ?>
+
         </ul>
         <?php
         if (!isset($_SESSION['username'])) {
@@ -145,6 +153,9 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
             <?php
         } else {
             echo "<p>Logged in as ".$_SESSION['username']."</p>";
+            if(getUserRights($_SESSION['username']>0)){
+                echo "<p> in admin mode</p>";
+            }
         }
         ?>
     </nav>

@@ -371,5 +371,20 @@ function sendQuery($query)
     return $result;
 }
 
+function getUserRights($username){ // They have no rights they are just our slaves
+    global $conn;
+    $stmt = $conn->prepare("SELECT `type` FROM `User` WHERE username = ?");
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+    if($outcome->num_rows > 0){
+        return ($outcome->fetch_assoc())["type"];
+    } else {
+        return -1;
+    }
+
+}
+
 
 
