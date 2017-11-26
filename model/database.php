@@ -311,6 +311,7 @@ function insertReservationByCar($location, $type, $username, $start, $end)
         $stmt->bind_param('sssi', $start, $end, $username, $carId);
         $stmt->execute();
         $stmt->close();
+        return true;
     } else {
         return false;
     }
