@@ -2,28 +2,6 @@
 include_once "dependencies/header.php";
 
 ?>
-    <script>
-        $(function () {
-            $('#make').on('change', function () {
-                //get current selected item from carMaker
-                var f = $('#make').val();
-                //send f to dropDownHandler
-                $.ajax({
-                    url: '~/../../model/dropDownHandler.php',
-                    type: 'post',
-                    data: {'make': f}
-                }).done(function (msg) {
-                    //insert html into selection
-                    document.getElementById('model').innerHTML = msg;
-                })
-                    .fail(function () {
-                        alert("error");
-                    })
-                    .always(function () {
-                    });
-            });
-        });
-    </script>
 
 
     <h1>Our cars</h1>
@@ -55,9 +33,7 @@ include_once "dependencies/header.php";
                         <label for="max">Max: </label>
                         <input id="max" type="number" min="0" name="maxPrice" placeholder="Max">
 
-
                         <input type="submit" value="Filter" class="btn btn-success">
-
 
                     </form>
                 </div>
@@ -65,14 +41,35 @@ include_once "dependencies/header.php";
         </div>
     </div>
 
-    <div class="col-sm-12">
         <h2>Selected cars</h2>
         <div id="tablePlaceHolder">
 
         </div>
 
-    </div>
+    <script>
+        $(function () {
+            $('#make').on('change', function () {
+                //get current selected item from carMaker
+                var f = $('#make').val();
+                //send f to dropDownHandler
+                $.ajax({
+                    url: '~/../../model/dropDownHandler.php',
+                    type: 'post',
+                    data: {'make': f}
+                }).done(function (msg) {
+                    //insert html into selection
+                    document.getElementById('model').innerHTML = msg;
+                })
+                    .fail(function () {
+                        alert("error");
+                    })
+                    .always(function () {
+                    });
+            });
+        });
 
+        window.onload = loadCars;
+    </script>
     <script type='text/javascript' src="js/cars.js"></script>
 <?php
 include_once "dependencies/footer.php";
