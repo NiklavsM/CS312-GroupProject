@@ -2,7 +2,11 @@
 include_once "~../../../model/database.php";
 if(isset($_POST['reservUserName'])){
     $userVal = input('reservUserName');
-    $reservations = getAdminUserReservation($userVal);
+    if($userVal != "") {
+        $reservations = getAdminUserReservation($userVal);
+    } else {
+        $reservations = getAllReservations();
+    }
 } else {
     $reservations = getAllReservations();
 }
@@ -19,5 +23,9 @@ while ($fetch = $reservations->fetch_assoc()) {
         . $fetch["model"] . "</td><td>"
         . $fetch["name"] . "</td><td>"
         . $fetch["active"] .
-        "</td><td><form id=\"invalidationForm\" method='post'><input name='hiddenID' id='hiddenID' type='hidden' value='" . $fetch["reservationid"] . "'><input type='submit' id='buttDisapear' name='buttDisapear' value = 'Disable' class='btn btn-success'></form></td></tr>";
+        "</td><td><form id=\"invalidationForm\" method='post'><input name='hiddenID' id='hiddenID' type='hidden' value='" . $fetch["reservationid"] . "'>";
+        if($fetch["active"] === 1){
+            echo "<input type='submit' id='buttDisapear' name='buttDisapear' value = 'Disable' class='btn btn-success'></form></td>";
+        }
+        echo "</tr>";
 }

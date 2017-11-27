@@ -23,7 +23,7 @@ include_once "dependencies/header.php";
 if (isset($_POST['hiddenID'])) {
     $id = input('hiddenID');
     invalidateReservation($id);
-    echo "<p>Maddened the evil dragon</p>";
+    echo "<p>Nik has done something wrong</p>";
 }
 if ($successfulLogin && isset($_SESSION['username'])) {
     if (getUserRights($_SESSION['username'] > 0)) {

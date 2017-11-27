@@ -136,7 +136,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
 
                 <?php
             }
-            if (isset($_SESSION['username']) && getUserRights($_SESSION['username']>0)) {
+            if (isset($_SESSION['username']) && getUserRights($_SESSION['username'])>0) {
                 ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -162,7 +162,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
             <?php
         } else {
             echo "<p>Logged in as ".$_SESSION['username']."</p>";
-            if(getUserRights($_SESSION['username']>0)){
+            if(getUserRights($_SESSION['username'])>0){
                 echo "<p>, in admin mode</p>";
             }
         }
