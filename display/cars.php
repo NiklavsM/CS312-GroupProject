@@ -33,34 +33,32 @@ include_once "dependencies/header.php";
                 <div class="panel-heading">Filter</div>
                 <div class="panel-body">
                     <form id="selectCarsForm" method="post">
-                        <div class="form-group row">
-                            <div class="col-xs-4">
-                                Make:<select id="make" name="make">
-                                    <option value="" selected>Any</option>
-                                    <?php
-                                    $carTypes = sqlGetCarsMakers();
-                                    while ($type = $carTypes->fetch_assoc()) {
-                                        echo '<option value=' . $type['make'] . '>' . $type['make'] . '</option>';
-                                    }
-                                    ?>
-                                </select>
-                                Model:<select id="model" name="model">
-                                    <option value="" selected>Any</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-2">
-                                Min:
-                                <input id="min" type="number" min="0" name="minPrice" placeholder="Min">
-                            </div>
-                            <div class="col-xs-2">
-                                Max:
-                                <input id="max" type="number" min="0" name="maxPrice" placeholder="Max">
-                            </div>
 
-                            <div class="col-xs-2">
-                                <input type="submit" value="Filter" class="btn btn-success">
-                            </div>
-                        </div>
+                        <label for="make">Make:</label>
+                        <select id="make" name="make">
+                            <option value="" selected>Any</option>
+                            <?php
+                            $carTypes = sqlGetCarsMakers();
+                            while ($type = $carTypes->fetch_assoc()) {
+                                echo '<option value=' . $type['make'] . '>' . $type['make'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                        <label for="model">Model: </label>
+                        <select id="model" name="model">
+                            <option value="" selected>Any</option>
+                        </select>
+
+                        <label for="min">Min: </label>
+                        <input id="min" type="number" min="0" name="minPrice" placeholder="Min">
+
+                        <label for="max">Max: </label>
+                        <input id="max" type="number" min="0" name="maxPrice" placeholder="Max">
+
+
+                        <input type="submit" value="Filter" class="btn btn-success">
+
+
                     </form>
                 </div>
             </div>
