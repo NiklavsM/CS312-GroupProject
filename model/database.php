@@ -422,13 +422,13 @@ function sqlGetCarsWithFilter($make,$model,$min,$max)
     global $conn;
     if ($make != null && $model != null) {
         if($min != null && $max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model SELECT price < ? AND price > ?");
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? AND price < ? AND price > ? ORDER BY make, model");
             $stmt->bind_param('ssii', $make, $model, $min, $max);
         } else if($min != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model SELECT price < ?");
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? AND price < ? ORDER BY make, model ");
             $stmt->bind_param('ssi', $make, $model, $min);
         } else if($max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model SELECT price > ?");
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? AND  price > ? ORDER BY make, model");
             $stmt->bind_param('ssi', $make, $model, $max);
         } else {
             $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model");
@@ -436,21 +436,32 @@ function sqlGetCarsWithFilter($make,$model,$min,$max)
         }
     } else if ($make != null) {
         if($min != null && $max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? ORDER BY make, model SELECT price < ? AND price > ?");
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND price < ? AND price > ? ORDER BY make, model");
             $stmt->bind_param('sii', $make, $min, $max);
         } else if($min != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? ORDER BY make, model SELECT price < ?");
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND price < ? ORDER BY make, model");
             $stmt->bind_param('si', $make, $min);
         } else if($max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? ORDER BY make, model SELECT price > ?");
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND price > ? ORDER BY make, model");
             $stmt->bind_param('si', $make, $max);
         } else {
             $stmt = $conn->prepare("SELECT * FROM `TypesOfCar` WHERE make = ? ORDER BY make, model");
             $stmt->bind_param('s', $make);
         }
     } else {
-        $sql = "SELECT * FROM `TypesOfCar` ORDER BY make, model";
-        return sendQuery($sql);
+        if($min != null && $max != null){
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE price < ? AND price > ? ORDER BY make, model");
+            $stmt->bind_param('ii', $min, $max);
+        } else if($min != null){
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE price < ? ORDER BY make, model");
+            $stmt->bind_param('i',  $min);
+        } else if($max != null){
+            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE price > ? ORDER BY make, model");
+            $stmt->bind_param('i', $max);
+        } else {
+            $sql = "SELECT * FROM `TypesOfCar` ORDER BY make, model";
+            return sendQuery($sql);
+        }
     }
     $stmt->execute();
     $outcome = $stmt->get_result();
