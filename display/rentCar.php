@@ -71,7 +71,7 @@ if (isset($_SESSION['username'])) {
                 </div>
                 <div class="col-sm-8">
 
-                        <img src="../img/<?php echo $img; ?>" alt="Picture of car">;
+                        <img src="../img/<?php echo $img; ?>" alt="Picture of car">
 
                 </div>
             </div>

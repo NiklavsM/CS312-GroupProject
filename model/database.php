@@ -437,13 +437,13 @@ function sqlGetCarsWithFilter($make,$model,$min,$max)
     } else if ($make != null) {
         if($min != null && $max != null){
             $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? ORDER BY make, model SELECT price < ? AND price > ?");
-            $stmt->bind_param('ssii', $make, $min, $max);
+            $stmt->bind_param('sii', $make, $min, $max);
         } else if($min != null){
             $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? ORDER BY make, model SELECT price < ?");
-            $stmt->bind_param('ssi', $make, $min);
+            $stmt->bind_param('si', $make, $min);
         } else if($max != null){
             $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? ORDER BY make, model SELECT price > ?");
-            $stmt->bind_param('ssi', $make, $max);
+            $stmt->bind_param('si', $make, $max);
         } else {
             $stmt = $conn->prepare("SELECT * FROM `TypesOfCar` WHERE make = ? ORDER BY make, model");
             $stmt->bind_param('s', $make);

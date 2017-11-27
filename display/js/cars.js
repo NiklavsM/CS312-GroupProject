@@ -9,7 +9,7 @@ $("#selectCarsForm").submit(function (event) {
         url = $form.attr('action');
 
     /* Send the data using post with element id name and name2*/
-    var posting = $.post("carTable.php", {make: $('#make').val(), model: $('#model').val()});
+    var posting = $.post("carTable.php", {make: $('#make').val(), model: $('#model').val(), minPrice: $('#min').val(),maxPrice: $('#max').val()});
 
     /* Alerts the results */
     posting.done(function (data) {
