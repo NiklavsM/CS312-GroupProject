@@ -3,7 +3,7 @@ include_once "database.php";
 $types = sqlgetCarTypes();
 $rowCount = $types->num_rows;
 if($rowCount > 0) {
-    $val = rand(0, $rowCount);
+    $val = rand(0, $rowCount - 1);
     for($i = 0; $i < $rowCount; $i ++){
         $instance = $types->fetch_assoc();
         if($i === $val){
