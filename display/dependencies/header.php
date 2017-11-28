@@ -15,11 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $password = isset($_POST['password']) ? filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
         $confirmPassword = isset($_POST['confirmPassword']) ? filter_var($_POST['confirmPassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
         $username = isset($_POST['username']) ? filter_var($_POST['username'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
-        $DLNumber = isset($_POST['DLNumber']) ? filter_var($_POST['DLNumber'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
         $successfulRegistration = $confirmPassword == $password;
 
-        if ($password != "" && $username != "" && $DLNumber != "" && $successfulRegistration) {
-            if (addNewUser($username, $password, $DLNumber, "JIM")) {
+        if ($password != "" && $username != "" && $successfulRegistration) {
+            if (addNewUser($username, $password)) {
                 $_SESSION["username"] = $username;
                 $_SESSION["password"] = $password;
                 $successfulLogin = true;

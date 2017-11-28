@@ -272,7 +272,7 @@ function checkLogin($username, $password){
     return false;
 }
 
-function addNewUser($username, $password, $dln, $name){
+function addNewUser($username, $password){
     $users = sqlGetUsers();
     while($user = $users ->fetch_assoc()){
         if($user["username"] === $username){
@@ -281,8 +281,8 @@ function addNewUser($username, $password, $dln, $name){
     }
     $encPass = md5($password);
     global $conn;
-    $stmt = $conn->prepare("INSERT INTO `User` (`username`, `password`, `name`, `dln`, `type`) VALUES (?,?,?,?, '0')");
-    $success = $stmt->bind_param('ssss', $username, $encPass, $name, $dln);
+    $stmt = $conn->prepare("INSERT INTO `User` (`username`, `password`, `name`, `type`) VALUES (?,?,'TIM', '0')");
+    $success = $stmt->bind_param('ss', $username, $encPass);
     $stmt->execute();
     $stmt->close();
     return $success;
