@@ -103,6 +103,7 @@ include_once "dependencies/header.php";
         });
 
         function validateDupe(field, msgOnFail, section){
+
             if(field === "" || field === null){
                 document.getElementById('msg'+section).innerHTML = msgOnFail;
                 document.getElementById("add"+section+"Div").className = "panel panel-danger";
@@ -131,24 +132,30 @@ include_once "dependencies/header.php";
             var postcode = $('#postcode').val();
             var loc = "Loc";
 
+            var regPostcode = /^([a-zA-Z]){1}([0-9][0-9]|[0-9]|[a-zA-Z][0-9][a-zA-Z]|[a-zA-Z][0-9][0-9]|[a-zA-Z][0-9]){1}([ ])([0-9][a-zA-z][a-zA-z]){1}$/;
             document.getElementById('msgLoc').innerHTML = "";
-
-            if(!(validateDupe(name, "Please enter a location name", loc) && validateDupe(postcode,"Please enter the Post code of the location" , loc))){
+            if(regPostcode.test(postcode) === false){
+                document.getElementById('msgLoc').innerHTML = "PostCode not a valid format, Accepted UK formats are:\n'A9 9AA', 'A99 9AA', 'AA9 9AA', 'AA99 9AA', 'AA9A 9AA'";
                 return false;
-            }else if(!validateDupe(number, "Please enter a valid phone number", loc) || !number.match(/^\d+$/)){
-                return false;
+            }else{
+                if(!validateDupe(name, "Please enter a location name", loc) || !validateDupe(postcode,"Please enter the Post code of the location" , loc)){
+                    return false;
+                }else if(!validateDupe(number, "Please enter a valid phone number", loc)){
+                    return false;
+                }else if(!number.match(/^\d{11}$/)){
+                    document.getElementById('msgLoc').innerHTML = "The phone number must be 11 digits long. (no spaces please)";
+                    document.getElementById("addLocDiv").className = "panel panel-danger";
+                    return false;
+                }
+                document.getElementById("addLocDiv").className = "panel panel-primary";
+                return true;
             }
-            document.getElementById("addLocDiv").className = "panel panel-primary";
-            return true;
         }
 
         function validateTypeForm(){
             var make = $('#make').val();
             var model = $('#model').val();
             var price = $('#price').val();
-            var file_data = $('#fileToUpload').prop('files')[0];
-//            console.log(file_data);
-//            return false;
             var type = "Type";
 
             document.getElementById('msgType').innerHTML = "";

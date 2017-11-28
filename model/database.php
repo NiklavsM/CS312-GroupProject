@@ -123,7 +123,9 @@ function insertLocation($name, $postc, $phonenumber)
     $stmt = $conn->prepare('INSERT INTO `Location` (`locationid`,`name`, `postcode`, `phonenumber`) VALUES (NULL, ?, ?, ?)');
     $stmt->bind_param('sss', $name, $postc, $phonenumber);
     $stmt->execute();
+    $outcome = $stmt->error;
     $stmt->close();
+    return $outcome;
 }
 
 function changeLocationOfCar($carid, $location)
