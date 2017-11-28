@@ -2,7 +2,7 @@
 
 include_once "database.php";
 if (!isset($_FILES['fileToUpload'])){
-    echo 'no file';
+    echo 'File not recognised.';
 }else{
     if ( 0 < $_FILES['fileToUpload']['error'] ) {
         echo 'Error: ' . $_FILES['fileToUpload']['error'];

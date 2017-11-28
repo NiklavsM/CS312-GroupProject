@@ -67,8 +67,6 @@ include_once "dependencies/header.php";
                     });
             });
         });
-
-        window.onload = loadCars;
     </script>
     <script type='text/javascript' src="js/cars.js"></script>
 <?php

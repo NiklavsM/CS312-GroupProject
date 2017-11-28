@@ -24,10 +24,7 @@ include_once "dependencies/header.php";
                 e.preventDefault();
                 if(validateTypeForm()){
                     var form = $('#addTypeForm')[0];
-                    console.log(form);
-                    console.log($('#addTypeForm')[0]);
                     var form_data = new FormData(form);
-                    console.log(form_data);
                     $.ajax({
                         url: '~/../../model/addCarTypeHandler.php',
                         type: 'post',
@@ -168,9 +165,10 @@ include_once "dependencies/header.php";
         }
 
     </script>
-
+<div class="container">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-lg-4">
+<!--            <div class="row">-->
             <div id="addCarDiv" class="panel panel-primary">
                 <div class="panel-heading">Add Car</div>
                 <div class="panel-body">
@@ -203,7 +201,7 @@ include_once "dependencies/header.php";
                     </form>
                 </div>
             </div></div>
-        <div class="col-sm-4">
+        <div class="col-lg-4">
             <div id="addTypeDiv" class="panel panel-primary">
                 <div class="panel-heading">Add CarType</div>
                 <div class="panel-body">
@@ -218,7 +216,7 @@ include_once "dependencies/header.php";
                         </table>
                     </form>
                 </div></div></div>
-        <div class="col-sm-4">
+        <div class="col-lg-4">
             <div id="addLocDiv" class="panel panel-primary">
                 <div class="panel-heading">Add Location</div>
                 <div class="panel-body">
@@ -233,7 +231,7 @@ include_once "dependencies/header.php";
                     </form>
                 </div></div></div>
     </div>
-
+</div>
 
 <?php
 
