@@ -64,7 +64,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     } else {
         echo "<p>Oops session has expired</p>";
         $successfulLogin = false;
-        session_cache_expire();
+        session_destroy();
     }
 } ?>
 
