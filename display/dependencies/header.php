@@ -165,6 +165,11 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
             if(getUserRights($_SESSION['username'])>0){
                 echo "<p>, in admin mode</p>";
             }
+            ?>
+            <ul class="nav-link menu_item">
+                    <a class="nav-link" href="logOut.php">Log Out</a>
+            </ul>
+        <?php
         }
         ?>
     </nav>
