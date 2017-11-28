@@ -18,7 +18,6 @@ if ($result->num_rows > 0) {
 if (isset($resultArray)) {
     ?>
     <table name="Table" class ="table">
-        </tr>
         <th></th>
         <th>Make</th>
         <th>Model</th>
@@ -48,7 +47,11 @@ if (isset($resultArray)) {
                     }
                     echo '<td>' . $row["make"] . '</td>';
                     echo '<td>' . $row["model"] . '</td>';
-                    echo '<td><img src="../img/'.$row["img"].'" alt="Luxury at its finest" height="90" width="90"></td>';
+                    if (file_exists("../img/".$row["img"])) {
+                        echo '<td><img src="../img/'.$row["img"].'" alt="Luxury at its finest" height="90" width="90"></td>';
+                    } else {
+                        echo "<td>No Image</td>";
+                    }
                     if($locationID === "NA"){
                         echo '<td>' . $row["location"] . '</td>';
                     }
@@ -79,9 +82,7 @@ if (isset($resultArray)) {
                     }
                     echo '</tr>';
                 }
-
             }
             ?>
     </table>
-
 <?php }

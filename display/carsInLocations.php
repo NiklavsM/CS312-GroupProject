@@ -12,18 +12,6 @@ include_once "dependencies/header.php";
             });
         });
 
-        function stopRent(button){
-            var id = $(button).val();
-            console.log("got here with:"+ id);
-//            $.ajax({
-//                url: 'transferCar.php',
-//                type: 'post',
-//                data: {'id': id}
-//            }).done(function(msg) {
-//                refresh();
-//            });
-        }
-
         function transfer(id, locationid){
             console.log("button clicked");
             console.log("id:" + id + " locationid:"+locationid);
@@ -75,9 +63,6 @@ include_once "dependencies/header.php";
                 });
         }
     </script>
-<!--    <div class="row">-->
-<!--        <div class="col-md-6">-->
-<!--            <div class="row">-->
                 <div class="col-sm-12">
                     <h1>Cars At Location</h1>
                     <div class="panel panel-info">
@@ -103,9 +88,7 @@ include_once "dependencies/header.php";
                         </div>
                     </div>
                 </div>
-<!--            </div>-->
-<!--            <div class="col-md-6">-->
-    <div class="col-sm-6">
+    <div class="col-sm-12">
         <div id="tableResponsePlaceHolder"></div>
     </div>
 

@@ -1,11 +1,77 @@
 <?php
 include_once "dependencies/header.php";
 
+?>
+<script>
+    function currentDate(){
+        var today = new Date();
+        var mm = today.getMonth()+1; //January is 0!
+        var dd = today.getDate();
+        var yyyy = today.getFullYear();
+        if(dd<10){
+            dd='0'+dd;
+        }
+        if(mm<10){
+            mm='0'+mm;
+        }
+        var today = yyyy +'-'+mm+'-'+dd;
+        $('#dateFromId').attr('min', today);
+    }
+    $(function(){
+        currentDate();
+        $('#dateFromId').on('change',function(){
+            var date = $('#dateFromId').val();
+            var dates = date.split("-");
+            var day = parseInt(dates[2]);
+            day = day+1;
+            date = dates[0]+'-'+dates[1]+'-'+day;
+            $('#dateToId').attr("min",date);
+        });
+        $('#dateToId').on('change',function(){
+            var date = $('#dateToId').val();
+            var dates = date.split("-");
+            var day = parseInt(dates[2]);
+            day = day-1;
+            date = dates[0]+'-'+dates[1]+'-'+day;
+            $('#dateFromId').attr("max",date);
+        });
+        $('#addRentForm').on('submit',function(e) {
+            e.preventDefault();
+            var dateFrom = $('#dateFromId').valueOf();
+            var dateTo = $('#dateToId').valueOf();
+
+            document.getElementById('rentingResponse').innerHTML = "";
+            var form_data = new FormData($('#addRentForm')[0]);
+            $.ajax({
+                url: '~/../../model/addRentACar.php',
+                type: 'post',
+                processData: false,
+                contentType: false,
+                async: false,
+                cache: false,
+                data: form_data,
+                success: function(msg){
+                    document.getElementById('rentingResponse').innerHTML = "";
+                    document.getElementById('rentingResponse').innerHTML = msg;
+                    if(msg === "Success"){
+                        document.getElementById("rentingResponse").className = "alert alert-success";
+                    }else{
+                        document.getElementById("rentingResponse").className = "alert alert-warning";
+                    }
+                }
+            });
+        });
+    });
+</script>
+<?php
+
 $typeid = input("typeid");
 $maker = input("make");
 $model = input("model");
 $price = input("price");
 $img = input("img");
+
+
 
 if (isset($_SESSION['username'])) {
     ?>
@@ -13,6 +79,7 @@ if (isset($_SESSION['username'])) {
     <div class="panel panel-info">
         <div class="panel-heading">Checkout</div>
         <div class="panel-body">
+            <div id="rentingResponse"></div>
             <div class="row">
                 <div class="col-sm-4">
                     <table class="table">
@@ -30,11 +97,11 @@ if (isset($_SESSION['username'])) {
                             <td id="pricePerDayId"><?php echo $price ?></td>
                         </tr>
 
-                        <form method="post" action="~/../../model/addRentACar.php" onsubmit="">
+                        <form method="post" id="addRentForm">
 
                             <tr>
                                 <td>Date From:</td>
-                                <td><input id="dateFromId" type="date" name="dateFrom" required
+                                <td><input id="dateFromId" type="date" name="dateFrom" min="<?php echo date("m-d-Y"); ?>" required
                                            onchange="calculatePrice()"></td>
                             </tr>
                             <tr>
@@ -52,7 +119,7 @@ if (isset($_SESSION['username'])) {
                                 echo '<option value=' . $location['locationid'] . '>' . $location['name'] . ' - ' . $location['postcode'] . '</option>';
                             }
                             echo '</select></td></tr>';
-                            echo '<input type="hidden" name="typeid" value="' . $typeid . ' ">';
+                            echo '<input type="hidden" name="typeid" value="' . $typeid . '">';
                             echo '<input type="hidden" name="username" value="' . $_SESSION['username'] . '">';
                             ?>
                             <tr>
@@ -61,7 +128,7 @@ if (isset($_SESSION['username'])) {
                             </tr>
                             <tr>
                                 <td></td>
-                                <td><input type="submit" value="RENT" class="btn btn-success pull-right"></td>
+                                <td><input id="addRentSubmit" type="submit" value="RENT" class="btn btn-success pull-right"></td>
                             </tr>
 
 
@@ -69,10 +136,18 @@ if (isset($_SESSION['username'])) {
 
                     </table>
                 </div>
-                <div class="col-sm-8">
-
+                <div class="span8" style="{width:100%; height:100%;}">
+                    <?php
+                    if (file_exists("../img/".$img)) {
+                       ?>
                         <img src="../img/<?php echo $img; ?>" alt="Picture of car">
-
+                    <?php
+                    } else {
+                        ?>
+                        No Image Available;
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>

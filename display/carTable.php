@@ -29,7 +29,11 @@ if (isset($resultArray)) {
                 echo '<td>' . $row["make"] . '</td>';
                 echo '<td>' . $row["model"] . '</td>';
                 echo '<td>£' . $row["price"] . '</td>';
-                echo '<td><img src="../img/'.$row["img"].'" alt="Picture of car" height="90" width="90"></td>';
+                if (file_exists("../img/".$row["img"])) {
+                    echo '<td><img src="../img/'.$row["img"].'" alt="Picture of car" height="90" width="90"></td>';
+                } else {
+                    echo "<td>No Image</td>";
+                }
                 echo '<td><form action="rentCar.php" method="post">';
                 echo '<input type = "hidden" name = "typeid" value = "' . $row["typeid"] . '" > ';
                 echo '<input type = "hidden" name = "make" value = "' . $row["make"] . '" > ';

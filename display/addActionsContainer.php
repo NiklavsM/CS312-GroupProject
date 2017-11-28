@@ -1,11 +1,5 @@
 <?php
 include_once "dependencies/header.php";
-/**
- * Created by IntelliJ IDEA.
- * User: mfb15135
- * Date: 24/11/2017
- * Time: 15:52
- */
 ?>
 
     <script>

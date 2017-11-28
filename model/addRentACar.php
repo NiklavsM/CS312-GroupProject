@@ -1,5 +1,5 @@
 <?php
-include_once "../display/dependencies/header.php";
+include_once "database.php";
 
 $dateFrom = input("dateFrom");
 $dateTo = input("dateTo");
@@ -9,18 +9,7 @@ $username = input("username");
 
 
 if (insertReservationByCar($location, $typeid, $username, $dateFrom, $dateTo)) {
-    ?>
-    <div class="alert alert-success">
-        <h3>Reservation successful</h3>
-    </div>
-    <?php
+    echo "Reservation successful";
 } else {
-    ?>
-    <div class="alert alert-warning">
-        <h3>Reservation unsuccessful, this car has already been rented</h3>
-    </div>
-    <?php
+    echo "Reservation unsuccessful, this car has already been rented";
 }
-
-
-include_once "../display/dependencies/footer.php";
