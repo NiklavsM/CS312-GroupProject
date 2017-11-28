@@ -43,7 +43,7 @@
                     </div>
                     <div class="form-group">
                         <label for="loginPassWord" class="control-label">Password</label>
-                        <input type="loginPassWord" class="form-control" id="loginPassWord" name="loginPassWord" value="" required=""
+                        <input type="password" class="form-control" id="loginPassWord" name="loginPassWord" value="" required=""
                                title="Please enter your loginPassWord" placeholder="Password">
                         <span class="help-block"></span>
                     </div>

@@ -271,14 +271,19 @@ function checkLogin($username, $password){
 }
 
 function addNewUser($username, $password, $dln, $name){
+    $users = sqlGetUsers();
+    while($user = $users ->fetch_assoc()){
+        if($user["username"] === $username){
+            return false;
+        }
+    }
     $encPass = md5($password);
     global $conn;
     $stmt = $conn->prepare("INSERT INTO `User` (`username`, `password`, `name`, `dln`, `type`) VALUES (?,?,?,?, '0')");
-    $stmt->bind_param('ssss', $username, $encPass, $name, $dln);
+    $success = $stmt->bind_param('ssss', $username, $encPass, $name, $dln);
     $stmt->execute();
-    $outcome = $stmt->get_result();
     $stmt->close();
-    return $outcome;
+    return $success;
     }
 
 
@@ -409,12 +414,8 @@ function invalidateReservation($id){
 
 function sqlGetUsers(){
     global $conn;
-    $stmt = $conn->prepare("SELECT * FROM `User`");
-    $stmt->bind_param('s', $username);
-    $stmt->execute();
-    $outcome = $stmt->get_result();
-    $stmt->close();
-    return $outcome;
+    $sql = ("SELECT * FROM `User`");
+    return sendQuery($sql);
 }
 
 function sqlGetCarsWithFilter($make,$model,$min,$max)

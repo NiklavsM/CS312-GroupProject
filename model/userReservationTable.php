@@ -10,7 +10,6 @@ if(isset($_POST['reservUserName'])){
 } else {
     $reservations = getAllReservations();
 }
-//https://www.youtube.com/watch?v=7jTgkTEDDog
 
 echo "<table class='table'>";
 echo "<tr><td>User Name</td></td><td>Start Date</td><td>End Date</td><td>Make</td><td>Model</td><td>Location</td><td>Active</td></tr>";

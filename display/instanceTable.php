@@ -48,7 +48,7 @@ if (isset($resultArray)) {
                     echo '<td>' . $row["make"] . '</td>';
                     echo '<td>' . $row["model"] . '</td>';
                     if (file_exists("../img/".$row["img"])) {
-                        echo '<td><img src="../img/'.$row["img"].'" alt="Luxury at its finest" height="90" width="90"></td>';
+                        echo '<td><img src="../img/'.$row["img"].'" alt="Car with make '.$row["make"].' and model '.$row["model"].'" height="90" width="90"></td>';
                     } else {
                         echo "<td>No Image</td>";
                     }
