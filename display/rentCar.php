@@ -136,11 +136,11 @@ if (isset($_SESSION['username'])) {
 
                     </table>
                 </div>
-                <div class="span8" style="{width:100%; height:100%;}">
+                <div class="col-sm-8">
                     <?php
                     if (file_exists("../img/".$img)) {
                        ?>
-                        <img src="../img/<?php echo $img; ?>" alt="Picture of car">
+                        <img src="../img/<?php echo $img; ?>" class ="img-responsive" alt="Picture of car" width="500" height="500">
                     <?php
                     } else {
                         ?>

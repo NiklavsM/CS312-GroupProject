@@ -30,7 +30,7 @@ if (isset($resultArray)) {
                 echo '<td>' . $row["model"] . '</td>';
                 echo '<td>£' . $row["price"] . '</td>';
                 if (file_exists("../img/".$row["img"])) {
-                    echo '<td><img src="../img/'.$row["img"].'" alt="Picture of car" height="90" width="90"></td>';
+                    echo '<td><img src="../img/'.$row["img"].'" class="img-thumbnail" alt="Picture of car" height="200" width="200"></td>';
                 } else {
                     echo "<td>No Image</td>";
                 }

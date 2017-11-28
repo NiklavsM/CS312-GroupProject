@@ -23,14 +23,16 @@ include_once "dependencies/header.php";
             $('#addTypeForm').on('submit', function (e) {
                 e.preventDefault();
                 if(validateTypeForm()){
-                    var form_data = new FormData($('#addTypeForm')[0]);
+                    var form = $('#addTypeForm')[0];
+                    console.log(form);
+                    console.log($('#addTypeForm')[0]);
+                    var form_data = new FormData(form);
+                    console.log(form_data);
                     $.ajax({
                         url: '~/../../model/addCarTypeHandler.php',
                         type: 'post',
                         processData: false,
                         contentType: false,
-                        async: false,
-                        cache: false,
                         data: form_data,
                         success: function(msg){
                             document.getElementById('msgType').innerHTML = "";

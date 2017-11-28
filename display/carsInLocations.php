@@ -91,9 +91,5 @@ include_once "dependencies/header.php";
     <div class="col-sm-12">
         <div id="tableResponsePlaceHolder"></div>
     </div>
-
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 <?php
 include_once "dependencies/footer.php";
