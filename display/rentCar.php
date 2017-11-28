@@ -22,17 +22,43 @@ include_once "dependencies/header.php";
         $('#dateFromId').on('change',function(){
             var date = $('#dateFromId').val();
             var dates = date.split("-");
-            var day = parseInt(dates[2]);
-            day = day+1;
-            date = dates[0]+'-'+dates[1]+'-'+day;
+            var d = new Date();
+            d.setFullYear(dates[0], dates[1]-1, dates[2]);
+            d.setDate(d.getDate() + 1);
+            var day;
+            var month;
+            if(d.getDate() < 10){
+                day = '0'+d.getDate();
+            }else{
+                day = d.getDate();
+            }
+            if((d.getMonth()+1) < 10){
+                month = '0'+(d.getMonth()+1);
+            }else{
+                month = (d.getMonth()+1);
+            }
+            var date = d.getFullYear()+'-'+month+'-'+day;
             $('#dateToId').attr("min",date);
         });
         $('#dateToId').on('change',function(){
             var date = $('#dateToId').val();
             var dates = date.split("-");
-            var day = parseInt(dates[2]);
-            day = day-1;
-            date = dates[0]+'-'+dates[1]+'-'+day;
+            var d = new Date();
+            d.setFullYear(dates[0], dates[1]-1, dates[2]);
+            d.setDate(d.getDate() - 1);
+            var day;
+            var month;
+            if(d.getDate() < 10){
+                day = '0'+d.getDate();
+            }else{
+                day = d.getDate();
+            }
+            if((d.getMonth()+1) < 10){
+                month = '0'+(d.getMonth()+1);
+            }else{
+                month = (d.getMonth()+1);
+            }
+            var date = d.getFullYear()+'-'+month+'-'+day;
             $('#dateFromId').attr("max",date);
         });
         $('#addRentForm').on('submit',function(e) {
