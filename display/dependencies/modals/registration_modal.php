@@ -12,16 +12,10 @@
         var username = $('#username').val();
         var pass = $('#password').val();
         var confrmPass = $('#confirmPassword').val();
-        var dlnumber = $('#DLNumber').val();
 
         console.log("This is a log");
         if(pass !== confrmPass){
             document.getElementById('msgReg').innerHTML = "Passwords do not match.";
-            event.preventDefault();
-            return false;
-        }
-        if(dlnumber === "" || dlnumber === null){
-            document.getElementById('msgReg').innerHTML = "Please enter Driver License Number.";
             event.preventDefault();
             return false;
         }
@@ -50,15 +44,9 @@
                 <div id="msgReg"></div>
                 <form id="registerForm" method="POST" action="~../../index.php" onsubmit="registerValidateForm(event)" novalidate="novalidate">
                     <div class="form-group">
-                        <label for="username" class="control-label">Drivers Licence Number</label>
-                        <input type="text" class="form-control" id="DLNumber" name="DLNumber" value="" required=""
-                               title="Please enter your driving licence number" placeholder="XXXXXXXXXXXXXXXXXX">
-                        <span class="help-block"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="username" class="control-label">Email</label>
+                        <label for="username" class="control-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username" value="" required=""
-                               title="Please enter you username" placeholder="example@gmail.com">
+                               title="Please enter you username" placeholder="example">
                         <span class="help-block"></span>
                     </div>
                     <div class="form-group">
@@ -66,7 +54,7 @@
                         <input type="password" class="form-control" id="password" name="password" value="" required=""
                                title="Please enter your password" placeholder="Password">
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                               required="" title="Please confirm your psasword" placeholder="Confirm password">
+                               required="" title="Please confirm your password" placeholder="Confirm password">
                         <span class="help-block"></span>
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Register</button>
