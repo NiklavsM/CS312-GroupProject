@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label for="loginUserName" class="control-label">Username</label>
                         <input type="text" class="form-control" id="loginUserName" name="loginUserName" value="" required=""
-                               title="Please enter you loginUserName" placeholder="username">
+                               title="Please enter you loginUserName" placeholder="Username">
                         <span class="help-block"></span>
                     </div>
                     <div class="form-group">
