@@ -100,7 +100,7 @@ if (isset($_SESSION['username'])) {
         <div class="panel-body">
             <div id="rentingResponse"></div>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-md-5">
                     <table class="table">
 
                         <tr>
@@ -155,7 +155,7 @@ if (isset($_SESSION['username'])) {
 
                     </table>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-md-7">
                     <?php
                     if (file_exists("../img/".$img)) {
                        ?>
