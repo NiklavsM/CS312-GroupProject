@@ -2,6 +2,9 @@
 session_start();
 include "~../../../model/database.php";
 $successfulLogin = False;
+function errorMessageToDisplay($something){
+    echo "<div class='panel panel-info'>$something</div>";
+}
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $password = "";
     $username = "";
@@ -23,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 $_SESSION["password"] = $password;
                 $successfulLogin = true;
             } else {
-                echo "<p>error there is already a username with that name</p>";
+                errorMessageToDisplay("error there is already a username with that name");
             }
         } else {
-            echo "<p>The application was unsuccessful with [$password, $username, $confirmPassword]</p>";
+            errorMessageToDisplay("The application was unsuccessful with [$password, $username, $confirmPassword]");
         }
     }
 
@@ -44,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                     $_SESSION['username'] = $username;
                     $successfulLogin = true;
                 } else {
-                    echo "<p>Incorrect Password</p>";
+                    errorMessageToDisplay("Incorrect Password Username combination");
                 }
             }
         }
@@ -61,7 +64,7 @@ if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['password']) && is
     if (checkLogin($username, $password)) {
         $successfulLogin = true;
     } else {
-        echo "<p>Oops session has expired</p>";
+        errorMessageToDisplay("Oops session has expired");
         $successfulLogin = false;
         session_destroy();
     }

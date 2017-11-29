@@ -415,9 +415,19 @@ function invalidateReservation($id){
 }
 
 function sqlGetUsers(){
-    global $conn;
     $sql = ("SELECT * FROM `User`");
     return sendQuery($sql);
+}
+
+function sqlGetPossibleUser($username){
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM `User` WHERE username = ?");
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
+
+    return $outcome;
 }
 
 function sqlGetCarsWithFilter($make,$model,$min,$max)
