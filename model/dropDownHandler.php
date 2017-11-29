@@ -3,23 +3,25 @@
 include_once "database.php";
 
 $var = input("make");
-$addCar = input("addCar");
-//echo  "Got :".$var." At php";
-if($var === "" && $addCar === "true"){
-    echo '<option value="">Please Select</option>';
-}else if($addCar === "" && $var === ""){
-    echo '<option value="" selected>Any</option>';
-}else if($var !== ""){
+$addCar = $var == "";
+$html = "";
 
-    $carTypes = sqlGetCarswithFilter($var,null);
-    if($addCar === ""){
-        $html = '<option value="" selected>Any</option>';
-    }else{
-        $html = "";
-    }
+//echo  "Got :".$var." At php";
+if ($var === "") {
+    echo '<option value="">Any</option>';
+} else if ($addCar === "" && $var === "") {
+    $html = '<option value="" selected>Any</option>';
+} else if ($var !== "") {
+
+    $carTypes = sqlgetCarTypesFromInstance($var);
+
+
     while ($type = $carTypes->fetch_assoc()) {
-        $varb = $html.'<option value="'.$type['model'].'">'.$type['model'].'</option>';
-        $html = $varb;
+
+        $html = $html . '<option value="' . $type['model'] . '">' . $type['model'] . '</option>';
+
     }
+
+    $html = '<option value="">Any</option>' . $html;
     echo $html;
 }

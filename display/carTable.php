@@ -5,8 +5,11 @@ $maker = input("make");
 $model = input("model");
 $minPrice = input("minPrice");
 $maxPrice = input("maxPrice");
+$dateFrom = input("dateFrom");
+$dateTo = input("dateTo");
 
-$result = sqlGetCarsWithFilter($maker, $model,$minPrice,$maxPrice);
+$result = sqlGetCarsWithFilter($maker, $model,$minPrice,$maxPrice, $dateFrom, $dateTo);
+
 if ($result->num_rows > 0) {
     $resultArray = array();
     while ($row = $result->fetch_assoc()) {

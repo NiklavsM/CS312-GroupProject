@@ -33,7 +33,14 @@ include_once "dependencies/header.php";
                         <label for="max">Max: </label>
                         <input id="max" type="number" min="0" name="maxPrice" placeholder="Max">
 
+
                         <input type="submit" value="Filter" class="btn btn-success">
+                    </br>
+                        <label for="dateFromId"> Date From: </label>
+                        <input id="dateFromId" type="date" name="dateFrom" min="<?php echo date("m-d-Y"); ?>" required>
+
+                        <label for "dateToId">Date To:</label>
+                        <input id="dateToId" type="date" name="dateTo" required>
 
                     </form>
                 </div>
@@ -41,10 +48,10 @@ include_once "dependencies/header.php";
         </div>
     </div>
 
-        <h2>Selected cars</h2>
-        <div id="tablePlaceHolder">
+    <h2>Selected cars</h2>
+    <div id="tablePlaceHolder">
 
-        </div>
+    </div>
 
     <script>
         $(function () {

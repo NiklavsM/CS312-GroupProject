@@ -1,6 +1,6 @@
 <?php
 
-if(count(get_included_files()) ==1) exit("Direct access not permitted.");
+if (count(get_included_files()) == 1) exit("Direct access not permitted.");
 $host = "devweb2017.cis.strath.ac.uk";
 $user = "cs312_o";
 $pass = "Bae3be6OoD7V";
@@ -116,7 +116,6 @@ function insertReservation($start, $end, $active, $username, $carId)
 }
 
 
-
 function insertLocation($name, $postc, $phonenumber)
 {
     global $conn;
@@ -137,7 +136,8 @@ function changeLocationOfCar($carid, $location)
     $stmt->close();
 }
 
-function sqlgetCarsAtLocation($location){
+function sqlgetCarsAtLocation($location)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT ci.carid AS id, toc.make AS make, toc.model AS model, toc.img AS img, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc ON toc.typeid = ci.type JOIN Location AS loc ON ci.location = loc.locationid WHERE ci.location = ?");
     $stmt->bind_param('i', $location);
@@ -149,7 +149,8 @@ function sqlgetCarsAtLocation($location){
 //    return sendQuery($sql);
 }
 
-function sqlCheckisRented($carID){
+function sqlCheckisRented($carID)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT res.username AS rentee FROM `CarInstance` AS ci JOIN Reservation AS res ON res.carid = ci.carid WHERE ci.carid = ? AND res.active = 1");
     $stmt->bind_param('i', $carID);
@@ -159,7 +160,8 @@ function sqlCheckisRented($carID){
     return $outcome;
 }
 
-function removeCarById($carid){
+function removeCarById($carid)
+{
     global $conn;
     $stmt = $conn->prepare('DELETE FROM `CarInstance` WHERE carid = ?');
     $stmt->bind_param('i', $carid);
@@ -204,6 +206,14 @@ function sqlgetCarTypes()
     $sql = "SELECT ci.carid AS id, toc.make AS make, toc.model AS model, toc.img AS img, loc.name AS location FROM `CarInstance` AS ci JOIN TypesOfCar AS toc JOIN Location AS loc ON ci.location = loc.locationid WHERE toc.typeid = ci.type";
     return sendQuery($sql);
 }
+function sqlgetCarTypesFromInstance($modelID){
+    global $conn;
+    $sql = "SELECT DISTINCT model from (SELECT ci.carid AS id, toc.make AS make, toc.model AS model, toc.img AS img\n"
+        . " FROM `CarInstance` AS ci \n"
+        . " JOIN TypesOfCar AS toc on toc.typeid = ci.type) as jeff where jeff.make = '".$modelID."'";
+
+    return sendQuery($sql);
+}
 
 function sqlgetUser()
 {
@@ -211,7 +221,8 @@ function sqlgetUser()
     return sendQuery($sql);
 }
 
-function sqlGetCarsMakers(){
+function sqlGetCarsMakers()
+{
     $sql = "SELECT make FROM `TypesOfCar` GROUP BY make";
     return sendQuery($sql);
 }
@@ -223,7 +234,8 @@ function sqlgetReservation()
 
 }
 
-function getTypeFromMakeAndModel($make,$model){
+function getTypeFromMakeAndModel($make, $model)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model");
     $stmt->bind_param('ss', $make, $model);
@@ -236,7 +248,8 @@ function getTypeFromMakeAndModel($make,$model){
 }
 
 
-function validateCarId($carId){
+function validateCarId($carId)
+{
     //TODO this is an issue when element and value aren't strings
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM `CarInstance` WHERE carid = ?");
@@ -251,31 +264,34 @@ function validateCarId($carId){
 
 }//TODO make this accept reality
 
-function input($field){
-    return (strip_tags((isset($_POST[$field]))?filter_var($_POST[$field], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "" ));//TODO Make sql save as sqli need connection
+function input($field)
+{
+    return (strip_tags((isset($_POST[$field])) ? filter_var($_POST[$field], FILTER_SANITIZE_FULL_SPECIAL_CHARS) : ""));//TODO Make sql save as sqli need connection
 }
 
-function checkLogin($username, $password){
+function checkLogin($username, $password)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM `User` WHERE `username` = ?");
     $stmt->bind_param('s', $username);
     $stmt->execute();
     $outcome = $stmt->get_result();
     $stmt->close();
-    if($outcome -> num_rows > 0){
-        $reqq = $outcome -> fetch_assoc();
+    if ($outcome->num_rows > 0) {
+        $reqq = $outcome->fetch_assoc();
         $pass = $reqq["password"];
-        if(md5($password) === $pass){
+        if (md5($password) === $pass) {
             return true;
         }
     }
     return false;
 }
 
-function addNewUser($username, $password){
+function addNewUser($username, $password)
+{
     $users = sqlGetUsers();
-    while($user = $users ->fetch_assoc()){
-        if($user["username"] === $username){
+    while ($user = $users->fetch_assoc()) {
+        if ($user["username"] === $username) {
             return false;
         }
     }
@@ -286,15 +302,13 @@ function addNewUser($username, $password){
     $stmt->execute();
     $stmt->close();
     return $success;
-    }
-
-
+}
 
 
 function insertReservationByCar($location, $type, $username, $start, $end)
 {
     $carId = sqlCheckValidDateForHire($location, $type, $start, $end);
-    if( $carId != -1) {
+    if ($carId != -1) {
         global $conn;
         $stmt = $conn->prepare('INSERT INTO `Reservation` (`reservationid`, `startdate`, `enddate`, `active`, `username`, `carid`) VALUES (NULL, ?, ?, 1, ?, ?)');
         $stmt->bind_param('sssi', $start, $end, $username, $carId);
@@ -306,24 +320,27 @@ function insertReservationByCar($location, $type, $username, $start, $end)
     }
 }
 
-function getInstancefromLocTyp($location, $type){
+function getInstancefromLocTyp($location, $type)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM `CarInstance` WHERE location= ? AND type = ?");
-    $stmt->bind_param('ii', $location,$type);
-     $stmt->execute();
-     $outcome = $stmt->get_result();
-     $stmt->close();
+    $stmt->bind_param('ii', $location, $type);
+    $stmt->execute();
+    $outcome = $stmt->get_result();
+    $stmt->close();
     return $outcome;
 }
-function sqlCheckValidDateForHire($location, $type, $start, $end){
+
+function sqlCheckValidDateForHire($location, $type, $start, $end)
+{
     $req = getInstancefromLocTyp($location, $type);
     if ($req->num_rows > 0) {
         while ($carID = $req->fetch_assoc()) {
             $car = $carID["carid"];
             $reqq = sqlgetReservationFromCarID($car);
             if ($reqq->num_rows > 0) {
-                while($reservation = $reqq ->fetch_assoc()){
-                    if(!(($start <= $reservation["enddate"] && $end >= $reservation["enddate"]) || ($start <= $reservation["startdate"] && $end >= $reservation["startdate"]) )){
+                while ($reservation = $reqq->fetch_assoc()) {
+                    if (!(($start <= $reservation["enddate"] && $end >= $reservation["enddate"]) || ($start <= $reservation["startdate"] && $end >= $reservation["startdate"]))) {
                         return $carID["carid"];
                     }
                 }
@@ -361,21 +378,23 @@ function sendQuery($query)
     return $result;
 }
 
-function getUserRights($username){ // They have no rights they are just our slaves
+function getUserRights($username)
+{ // They have no rights they are just our slaves
     global $conn;
     $stmt = $conn->prepare("SELECT `type` FROM `User` WHERE username = ?");
     $stmt->bind_param('s', $username);
     $stmt->execute();
     $outcome = $stmt->get_result();
     $stmt->close();
-    if($outcome->num_rows > 0){
+    if ($outcome->num_rows > 0) {
         return ($outcome->fetch_assoc())["type"];
     } else {
         return -1;
     }
 }
 
-function getUserReservation($username){
+function getUserReservation($username)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT reservationid, startdate, enddate, model, make, name FROM `Reservation` AS r JOIN `CarInstance` AS ci JOIN `TypesOfCar` AS toc JOIN `Location` AS l ON r.carid = ci.carid AND ci.type = toc.typeid AND ci.location = l.locationid WHERE username =?  AND active = 1");
     $stmt->bind_param('s', $username);
@@ -385,7 +404,8 @@ function getUserReservation($username){
     return $outcome;
 }
 
-function getAdminUserReservation($username){
+function getAdminUserReservation($username)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT active, reservationid, username, startdate, enddate, model, make, name FROM `Reservation` AS r JOIN `CarInstance` AS ci JOIN `TypesOfCar` AS toc JOIN `Location` AS l ON r.carid = ci.carid AND ci.type = toc.typeid AND ci.location = l.locationid WHERE username =?");
     $stmt->bind_param('s', $username);
@@ -395,7 +415,8 @@ function getAdminUserReservation($username){
     return $outcome;
 }
 
-function getAllReservations(){
+function getAllReservations()
+{
     global $conn;
     $stmt = $conn->prepare("SELECT active, reservationid, username, startdate, enddate, model, make, name FROM `Reservation` AS r JOIN `CarInstance` AS ci JOIN `TypesOfCar` AS toc JOIN `Location` AS l ON r.carid = ci.carid AND ci.type = toc.typeid AND ci.location = l.locationid");
     $stmt->execute();
@@ -406,7 +427,8 @@ function getAllReservations(){
 }
 
 
-function invalidateReservation($id){
+function invalidateReservation($id)
+{
     global $conn;
     $stmt = $conn->prepare('UPDATE `Reservation` SET active = 0 WHERE reservationid = ?');
     $stmt->bind_param('i', $id);
@@ -414,12 +436,14 @@ function invalidateReservation($id){
     $stmt->close();
 }
 
-function sqlGetUsers(){
+function sqlGetUsers()
+{
     $sql = ("SELECT * FROM `User`");
     return sendQuery($sql);
 }
 
-function sqlGetPossibleUser($username){
+function sqlGetPossibleUser($username)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM `User` WHERE username = ?");
     $stmt->bind_param('s', $username);
@@ -430,50 +454,83 @@ function sqlGetPossibleUser($username){
     return $outcome;
 }
 
-function sqlGetCarsWithFilter($make,$model,$min,$max)
+function sqlGetCarsWithFilter($make, $model, $min, $max, $dateFrom, $dateTo)
 {
     global $conn;
+    $sql = " LEFT JOIN `CarInstance` AS ci ON ci.type = toc.typeid
+         JOIN `Reservation` AS res ON  res.carid = ci.carid   ";
+    $wherecheck = " (res.active=0 OR( res.active=1 AND (?< res.startdate AND ? > res . enddate) AND (? < res.startdate AND ?>res . enddate)))";
+
+    if (!$dateFrom) {
+        $dateFrom = "2017-11-13";
+    }
+    if (!$dateTo) {
+        $dateTo = "2017-11-30";
+    }
+
     if ($make != null && $model != null) {
-        if($min != null && $max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? AND price > ? AND price < ? ORDER BY make, model");
-            $stmt->bind_param('ssii', $make, $model, $min, $max);
-        } else if($min != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? AND price > ? ORDER BY make, model ");
-            $stmt->bind_param('ssi', $make, $model, $min);
-        } else if($max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? AND  price < ? ORDER BY make, model");
-            $stmt->bind_param('ssi', $make, $model, $max);
+        if ($min != null && $max != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.make = ? AND toc.model = ? AND toc.price > ? AND toc.price < ? AND $wherecheck");
+
+            $stmt->bind_param('ssiissss', $make, $model, $min, $max, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+
+        } else if ($min != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc  $sql WHERE toc.make = ? AND toc.model = ? AND toc.price > ? AND $wherecheck");
+            $stmt->bind_param('ssissss', $make, $model, $min, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+
+        } else if ($max != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.make = ? AND toc.model = ? AND  toc.price < ? AND $wherecheck ");
+            $stmt->bind_param('ssissss', $make, $model, $max, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+
         } else {
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND model = ? ORDER BY make, model");
-            $stmt->bind_param('ss', $make, $model);
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.make = ? AND toc.model = ? AND $wherecheck");
+            $stmt->bind_param('ssssss', $make, $model, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
         }
     } else if ($make != null) {
-        if($min != null && $max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND price > ? AND price < ? ORDER BY make, model");
-            $stmt->bind_param('sii', $make, $min, $max);
-        } else if($min != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND price > ? ORDER BY make, model");
-            $stmt->bind_param('si', $make, $min);
-        } else if($max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE make = ? AND price < ? ORDER BY make, model");
-            $stmt->bind_param('si', $make, $max);
+        if ($min != null && $max != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.make = ? AND toc.price > ? AND toc.price < ? AND $wherecheck ");
+            $stmt->bind_param('siissss', $make, $min, $max, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+        } else if ($min != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.make = ? AND toc.price > ? AND $wherecheck ");
+            $stmt->bind_param('sissss', $make, $min, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+        } else if ($max != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.make = ? AND toc.price < ? AND $wherecheck ");
+            $stmt->bind_param('sissss', $make, $max, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
         } else {
-            $stmt = $conn->prepare("SELECT * FROM `TypesOfCar` WHERE make = ? ORDER BY make, model");
-            $stmt->bind_param('s', $make);
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.make = ?  AND $wherecheck ");
+            $stmt->bind_param('sssss', $make, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+
         }
     } else {
-        if($min != null && $max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE price > ? AND price < ? ORDER BY make, model");
-            $stmt->bind_param('ii', $min, $max);
-        } else if($min != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE price > ? ORDER BY make, model");
-            $stmt->bind_param('i',  $min);
-        } else if($max != null){
-            $stmt = $conn->prepare("SELECT * FROM TypesOfCar WHERE price < ? ORDER BY make, model");
-            $stmt->bind_param('i', $max);
+        if ($min != null && $max != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.price > ? AND toc.price < ? AND $wherecheck ");
+            $stmt->bind_param('iissss', $min, $max, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+
+        } else if ($min != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.price > ?  AND $wherecheck ");
+            $stmt->bind_param('issss', $min, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+
+        } else if ($max != null) {
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM TypesOfCar AS toc $sql WHERE toc.price < ? AND $wherecheck");
+            $stmt->bind_param('issss', $max, $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+
         } else {
-            $sql = "SELECT * FROM `TypesOfCar` ORDER BY make, model";
-            return sendQuery($sql);
+            $stmt = $conn->prepare("SELECT DISTINCT * FROM `TypesOfCar` AS toc $sql where $wherecheck ");
+
+            $stmt->bind_param("ssss", $dateFrom, $dateTo, $dateFrom, $dateTo);
+
+
         }
     }
     $stmt->execute();
